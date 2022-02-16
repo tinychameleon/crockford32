@@ -41,7 +41,9 @@ class TestCrockford32 < Minitest::Test
     29 => { decode: ['X', 'x'], encode: 'X' },
     30 => { decode: ['Y', 'y'], encode: 'Y' },
     31 => { decode: ['Z', 'z'], encode: 'Z' },
-    # Base32 Checksum Symbols
+  }.freeze
+
+  CHECKS = {
     32 => { decode: ['*'], encode: '*' },
     33 => { decode: ['~'], encode: '~' },
     34 => { decode: ['$'], encode: '$' },
@@ -68,6 +70,14 @@ class TestCrockford32 < Minitest::Test
     assert_equal 33825, ::Crockford32.decode("IiLl"), "decode('IiLl')"
   end
 
+  def test_checksum_symbols_mid_string_is_an_error
+    assert_raises(::Crockford32::IllegalChecksumCharacterError) { ::Crockford32.decode('ABC*123') }
+  end
+
+  def test_unicode_symbols_mid_string_is_an_error
+    assert_raises(::Crockford32::InvalidCharacterError) { ::Crockford32.decode('ABCé123') }
+  end
+
   # TODO:
   # - Support dashes in encoded values
   # - Encoding values
@@ -75,6 +85,5 @@ class TestCrockford32 < Minitest::Test
   #   - Left extension for encoding values in multiples of 5 bits.
   # - Support binary values for encoding
   # - Enforcing checksum symbols exclusively at end of string.
-  # - Good error messages for decoding problems
   # - Benchmark + optimize
 end

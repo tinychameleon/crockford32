@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 require_relative "crockford32/version"
+require_relative "crockford32/errors"
 
 module Crockford32
-  class Error < StandardError; end
-
   DECODE_SYMBOLS = {
-    # Base32 Symbols
     '0' => 0, 'O' => 0, 'o' => 0,
     '1' => 1, 'I' => 1, 'i' => 1, 'L' => 1, 'l' => 1,
     '2' => 2,
@@ -39,7 +37,9 @@ module Crockford32
     'X' => 29, 'x' => 29,
     'Y' => 30, 'y' => 30,
     'Z' => 31, 'z' => 31,
-    # Base32 Checksum Symbols
+  }
+
+  CHECKSUM_SYMBOLS = {
     '*' => 32,
     '~' => 33,
     '$' => 34,
@@ -48,8 +48,13 @@ module Crockford32
   }
 
   def self.decode(str)
-    str.chars.reduce(0) do |result, ch|
-      (result << 5) | DECODE_SYMBOLS[ch]
+    str.chars.each_with_index.reduce(0) do |result, ch_index|
+      begin
+        (result << 5) | DECODE_SYMBOLS.fetch(ch_index[0])
+      rescue KeyError
+        raise IllegalChecksumCharacterError.new(str, ch_index[1]) if CHECKSUM_SYMBOLS.key? ch_index[0]
+        raise InvalidCharacterError.new(str, ch_index[1])
+      end
     end
   end
 end
