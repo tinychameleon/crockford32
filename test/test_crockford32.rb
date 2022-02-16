@@ -70,6 +70,12 @@ class TestCrockford32 < Minitest::Test
     assert_equal 33825, ::Crockford32.decode("IiLl"), "decode('IiLl')"
   end
 
+  def test_decode_supports_arbitrary_dashes
+    assert_equal 1234, ::Crockford32.decode("16-J"), "decode('16-J')"
+    assert_equal 123456789012345, ::Crockford32.decode("3G-923-0VQ-VS"), "decode('3G-923-0VQ-VS')"
+    assert_equal 1e20, ::Crockford32.decode("2pqhty5-nhhoooo"), "decode('2pqhty5-nhhoooo')"
+  end
+
   def test_checksum_symbols_mid_string_is_an_error
     assert_raises(::Crockford32::IllegalChecksumCharacterError) { ::Crockford32.decode('ABC*123') }
   end
@@ -79,7 +85,6 @@ class TestCrockford32 < Minitest::Test
   end
 
   # TODO:
-  # - Support dashes in encoded values
   # - Encoding values
   #   - Emit only upper-case letter symbols
   #   - Left extension for encoding values in multiples of 5 bits.

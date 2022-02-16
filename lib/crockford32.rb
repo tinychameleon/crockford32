@@ -49,6 +49,7 @@ module Crockford32
 
   def self.decode(str)
     str.chars.each_with_index.reduce(0) do |result, ch_index|
+      next result if ch_index[0] == '-'
       begin
         (result << 5) | DECODE_SYMBOLS.fetch(ch_index[0])
       rescue KeyError
