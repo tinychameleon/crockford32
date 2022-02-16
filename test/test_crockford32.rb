@@ -3,7 +3,7 @@
 require "test_helper"
 
 class TestCrockford32 < Minitest::Test
-  def test_that_it_has_a_version_number
+  def test_it_has_a_version_number
     refute_nil ::Crockford32::VERSION
   end
 
@@ -49,12 +49,7 @@ class TestCrockford32 < Minitest::Test
     36 => { decode: ['U', 'u'], encode: 'U' },
   }.freeze
 
-  REGRESSIONS = [
-    {encoded: "101o1O", decoded: 33587232},
-    {encoded: "IiLl", decoded: 33825},
-  ].freeze
-
-  def test_that_individual_characters_decode_correctly
+  def test_individual_characters_decode_correctly
     VALUES.each do |val, config|
       config[:decode].each do |ch|
         assert_equal val, ::Crockford32.decode(ch), "decode('#{ch}')"
@@ -62,10 +57,15 @@ class TestCrockford32 < Minitest::Test
     end
   end
 
-  def test_that_simple_encodings_decode_correctly
+  def test_simple_encodings_decode_correctly
     assert_equal 1234, ::Crockford32.decode("16J"), "decode('16J')"
     assert_equal 123456789012345, ::Crockford32.decode("3G9230VQVS"), "decode('3G9230VQVS')"
     assert_equal 1e20, ::Crockford32.decode("2pqhty5nhhoooo"), "decode('2pqhty5nhhoooo')"
+  end
+
+  def test_confusing_symbols_decode_correctly
+    assert_equal 33587232, ::Crockford32.decode("101o1O"), "decode('101o1O')"
+    assert_equal 33825, ::Crockford32.decode("IiLl"), "decode('IiLl')"
   end
 
   # TODO:
