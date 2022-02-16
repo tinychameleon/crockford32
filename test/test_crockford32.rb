@@ -67,4 +67,14 @@ class TestCrockford32 < Minitest::Test
     assert_equal 123456789012345, ::Crockford32.decode("3G9230VQVS"), "decode('3G9230VQVS')"
     assert_equal 1e20, ::Crockford32.decode("2pqhty5nhhoooo"), "decode('2pqhty5nhhoooo')"
   end
+
+  # TODO:
+  # - Support dashes in encoded values
+  # - Encoding values
+  #   - Emit only upper-case letter symbols
+  #   - Left extension for encoding values in multiples of 5 bits.
+  # - Support binary values for encoding
+  # - Enforcing checksum symbols exclusively at end of string.
+  # - Good error messages for decoding problems
+  # - Benchmark + optimize
 end
