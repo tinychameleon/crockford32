@@ -11,6 +11,12 @@ module Crockford32
     end
   end
 
+  class UnsupportedTypeError < EncodeError
+    def initialize(type)
+      super("Encoding #{type} not supported")
+    end
+  end
+
   class DecodeError < Error
     attr_reader :string, :index
 

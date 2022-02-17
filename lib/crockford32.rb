@@ -96,8 +96,26 @@ module Crockford32
     end
   end
 
-  def self.encode(number, step: nil, length: nil)
-    number = number.to_i if number.real?
+  def self.encode(value, step: nil, length: nil)
+    encode_number(
+      case value
+      when String
+        value.bytes.map { |i| format("%02x", i) }.join.to_i(16)
+      when Float
+        value.to_i
+      when Integer
+        value
+      else
+        raise UnsupportedTypeError.new(value.class)
+      end,
+      step,
+      length
+    )
+  end
+
+  private
+
+  def self.encode_number(number, step, length)
     result = ""
     index = 1
     loop do

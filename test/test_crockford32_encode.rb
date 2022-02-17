@@ -73,4 +73,14 @@ class TestCrockford32Encode < Minitest::Test
   def test_encode_with_a_length_smaller_than_the_result_is_an_error
     assert_raises(::Crockford32::LengthTooSmallError) { ::Crockford32.encode(1234, length: 1) }
   end
+
+  def test_encode_supports_byte_strings
+    assert_equal "16J", ::Crockford32.encode("\x04\xd2"), "encode('\\x04\\xd2')"
+    assert_equal "3G9230VQVS", ::Crockford32.encode("\x70\x48\x86\x0d\xdf\x79"), "encode('\\x70\\x48\\x86\\x0d\\xdf\\x79')"
+    assert_equal "2PQHTY5NHH0000", ::Crockford32.encode("\x05\x6b\xc7\x5e\x2d\x63\x10\x00\x00"), "encode('\\x05\\x6b\\xc7\\x5e\\x2d\\x63\\x10\\x00\\x00')"
+  end
+
+  def test_encode_with_an_unsupported_type_is_an_error
+    assert_raises(::Crockford32::UnsupportedTypeError) { ::Crockford32.encode(/abc/) }
+  end
 end

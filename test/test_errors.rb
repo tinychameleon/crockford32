@@ -9,6 +9,12 @@ class TestCrockford32Errors < Minitest::Test
     assert_equal "Encoding ABC requires a minimum length of 6, but received 4", err.message, "friendly message"
   end
 
+  def test_unsupported_type_error
+    err = ::Crockford32::UnsupportedTypeError.new(Regexp)
+    assert_kind_of ::Crockford32::EncodeError, err
+    assert_equal "Encoding Regexp not supported", err.message, "friendly message"
+  end
+
   def test_base_decode_error
     err = ::Crockford32::DecodeError.new("message", "AUBC", 1)
     assert_equal "AUBC", err.string, "string = AUBC"
