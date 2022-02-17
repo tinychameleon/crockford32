@@ -55,7 +55,7 @@ class TestCrockford32Encode < Minitest::Test
   def test_simple_values_encode_correctly
     assert_equal "16J", ::Crockford32.encode(1234), "encode(1234)"
     assert_equal "3G9230VQVS", ::Crockford32.encode(123456789012345), "encode(123456789012345)"
-    assert_equal "2PQHTY5NHH0000", ::Crockford32.encode(1e20), "encode(1e20)"
+    assert_equal "2PQHTY5NHH0000", ::Crockford32.encode(1e20.to_i), "encode(1e20)"
   end
 
   def test_encode_can_insert_dashes_at_steps

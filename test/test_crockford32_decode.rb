@@ -57,7 +57,7 @@ class TestCrockford32Decode < Minitest::Test
   def test_simple_encodings_decode_correctly
     assert_equal 1234, ::Crockford32.decode("16J"), "decode('16J')"
     assert_equal 123456789012345, ::Crockford32.decode("3G9230VQVS"), "decode('3G9230VQVS')"
-    assert_equal 1e20, ::Crockford32.decode("2pqhty5nhhoooo"), "decode('2pqhty5nhhoooo')"
+    assert_equal 1e20.to_i, ::Crockford32.decode("2pqhty5nhhoooo"), "decode('2pqhty5nhhoooo')"
   end
 
   def test_confusing_symbols_decode_correctly
@@ -68,7 +68,7 @@ class TestCrockford32Decode < Minitest::Test
   def test_decode_supports_arbitrary_dashes
     assert_equal 1234, ::Crockford32.decode("16-J"), "decode('16-J')"
     assert_equal 123456789012345, ::Crockford32.decode("3G-923-0VQ-VS"), "decode('3G-923-0VQ-VS')"
-    assert_equal 1e20, ::Crockford32.decode("2pqhty5-nhhoooo"), "decode('2pqhty5-nhhoooo')"
+    assert_equal 1e20.to_i, ::Crockford32.decode("2pqhty5-nhhoooo"), "decode('2pqhty5-nhhoooo')"
   end
 
   def test_checksum_symbols_mid_string_is_an_error

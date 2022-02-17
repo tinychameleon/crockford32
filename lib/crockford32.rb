@@ -101,8 +101,6 @@ module Crockford32
       case value
       when String
         value.bytes.map { |i| format("%02x", i) }.join.to_i(16)
-      when Float
-        value.to_i
       when Integer
         value
       else
