@@ -11,6 +11,5 @@ class TestCrockford32 < Minitest::Test
   # - Encoding values
   #   - Left extension for encoding values in multiples of 5 bits.
   # - Support binary values for encoding
-  # - Enforcing checksum symbols exclusively at end of string.
   # - Benchmark + optimize
 end

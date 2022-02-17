@@ -57,4 +57,20 @@ class TestCrockford32Encode < Minitest::Test
     assert_equal "3G9230VQVS", ::Crockford32.encode(123456789012345), "encode(123456789012345)"
     assert_equal "2PQHTY5NHH0000", ::Crockford32.encode(1e20), "encode(1e20)"
   end
+
+  def test_encode_can_insert_dashes_at_steps
+    assert_equal "3-G92-30V-QVS", ::Crockford32.encode(123456789012345, step: 3), "encode(123456789012345, step: 3)"
+  end
+
+  def test_encode_can_pad_to_a_length
+    assert_equal "0016J", ::Crockford32.encode(1234, length: 5), "encode(1234, length: 5)"
+  end
+
+  def test_encode_can_pad_and_insert_dashes
+    assert_equal "01-6J", ::Crockford32.encode(1234, length: 5, step: 2), "encode(1234, length: 5, step: 2)"
+  end
+
+  def test_encode_with_a_length_smaller_than_the_result_is_an_error
+    assert_raises(::Crockford32::LengthTooSmallError) { ::Crockford32.encode(1234, length: 1) }
+  end
 end

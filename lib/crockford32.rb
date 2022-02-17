@@ -82,9 +82,11 @@ module Crockford32
     'U' => 36, 'u' => 36,
   }
 
+  DASH = '-'.freeze
+
   def self.decode(str)
     str.chars.each_with_index.reduce(0) do |result, ch_index|
-      next result if ch_index[0] == '-'
+      next result if ch_index[0] == DASH
       begin
         (result << 5) | DECODE_SYMBOLS.fetch(ch_index[0])
       rescue KeyError
@@ -94,14 +96,22 @@ module Crockford32
     end
   end
 
-  def self.encode(number)
+  def self.encode(number, step: nil, length: nil)
     number = number.to_i if number.real?
     result = ""
+    index = 1
     loop do
       chunk = number & 0x1F
       result += ENCODE_SYMBOLS[chunk]
+      result += DASH if step && index % step == 0
       number /= 0x20
       break if number == 0
+      index += 1
+    end
+
+    if length
+      raise LengthTooSmallError.new(number, result.length, length) if result.length > length
+      result = result.ljust(length, "0") if length
     end
     result.reverse
   end

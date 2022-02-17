@@ -3,6 +3,14 @@
 module Crockford32
   class Error < StandardError; end
 
+  class EncodeError < Error; end
+
+  class LengthTooSmallError < EncodeError
+    def initialize(value, needed, given)
+      super("Encoding #{value} requires a minimum length of #{needed}, but received #{given}")
+    end
+  end
+
   class DecodeError < Error
     attr_reader :string, :index
 

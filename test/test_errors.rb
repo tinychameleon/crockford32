@@ -3,6 +3,12 @@
 require "test_helper"
 
 class TestCrockford32Errors < Minitest::Test
+  def test_length_too_small_error
+    err = ::Crockford32::LengthTooSmallError.new("ABC", 6, 4)
+    assert_kind_of ::Crockford32::EncodeError, err
+    assert_equal "Encoding ABC requires a minimum length of 6, but received 4", err.message, "friendly message"
+  end
+
   def test_base_decode_error
     err = ::Crockford32::DecodeError.new("message", "AUBC", 1)
     assert_equal "AUBC", err.string, "string = AUBC"
