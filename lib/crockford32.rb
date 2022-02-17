@@ -72,6 +72,13 @@ module Crockford32
     29 => 'X',
     30 => 'Y',
     31 => 'Z',
+    # Check Exclusive Symbols
+    32 => '*',
+    33 => '~',
+    34 => '$',
+    35 => '=',
+    36 => 'U',
+    36 => 'u',
   }
 
   CHECKSUM_SYMBOLS = {
@@ -107,7 +114,7 @@ module Crockford32
     end
   end
 
-  def self.encode(value, step: nil, length: nil)
+  def self.encode(value, step: nil, length: nil, check: false)
     encode_number(
       case value
       when String
@@ -118,15 +125,16 @@ module Crockford32
         raise UnsupportedEncodingTypeError.new(value.class)
       end,
       step,
-      length
+      length,
+      check,
     )
   end
 
   private
 
-  def self.encode_number(number, step, length)
-    result = ""
-    index = 1
+  def self.encode_number(number, step, length, check)
+    result = check ? ENCODE_SYMBOLS[number % 37] : ""
+    index = check ? 2 : 1
     loop do
       chunk = number & 0x1F
       result += ENCODE_SYMBOLS[chunk]

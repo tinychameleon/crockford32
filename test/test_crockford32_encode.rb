@@ -83,4 +83,14 @@ class TestCrockford32Encode < Minitest::Test
   def test_encode_with_an_unsupported_type_is_an_error
     assert_raises(::Crockford32::UnsupportedEncodingTypeError) { ::Crockford32.encode(/abc/) }
   end
+
+  def test_encode_can_include_checksum
+    assert_equal "16JD", ::Crockford32.encode(1234, check: true), "encode(1234, check: true)"
+    assert_equal "3NQK8Nu", ::Crockford32.encode(123456789, check: true), "encode(123456789, check: true)"
+    assert_equal "2PQHTY5NHH0000T", ::Crockford32.encode(1e20.to_i, check: true), "encode(1e20, check: true)"
+  end
+
+  def test_encode_can_pad_and_insert_dashes_and_include_a_checksum
+    assert_equal "00-16-JD", ::Crockford32.encode(1234, step: 2, length: 8, check: true)
+  end
 end
