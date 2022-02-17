@@ -24,15 +24,15 @@ module Crockford32
     end
   end
 
-  class IllegalChecksumCharacterError < DecodeError
-    def initialize(string, index)
-      super("Checksum character '#{string[index]}' in '#{string}' at index #{index} instead of at end")
-    end
-  end
-
   class UnsupportedDecodingTypeError < DecodeError
     def initialize(type)
       super("Decoding as :#{type} not supported")
+    end
+  end
+
+  class ChecksumError < DecodeError
+    def initialize(value, checksum, checksum_required)
+      super("Value #{value} has checksum #{checksum} but requires #{checksum_required}")
     end
   end
 end

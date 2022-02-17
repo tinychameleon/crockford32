@@ -86,7 +86,7 @@ class TestCrockford32Encode < Minitest::Test
 
   def test_encode_can_include_checksum
     assert_equal "16JD", ::Crockford32.encode(1234, check: true), "encode(1234, check: true)"
-    assert_equal "3NQK8Nu", ::Crockford32.encode(123456789, check: true), "encode(123456789, check: true)"
+    assert_equal "3NQK8NU", ::Crockford32.encode(123456789, check: true), "encode(123456789, check: true)"
     assert_equal "2PQHTY5NHH0000T", ::Crockford32.encode(1e20.to_i, check: true), "encode(1e20, check: true)"
   end
 

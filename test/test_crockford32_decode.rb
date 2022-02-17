@@ -72,7 +72,7 @@ class TestCrockford32Decode < Minitest::Test
   end
 
   def test_checksum_symbols_mid_string_is_an_error
-    assert_raises(::Crockford32::IllegalChecksumCharacterError) { ::Crockford32.decode('ABC*123') }
+    assert_raises(::Crockford32::InvalidCharacterError) { ::Crockford32.decode('ABC*123') }
   end
 
   def test_unicode_symbols_mid_string_is_an_error
@@ -81,5 +81,16 @@ class TestCrockford32Decode < Minitest::Test
 
   def test_unsupported_decode_type_is_an_error
     assert_raises(::Crockford32::UnsupportedDecodingTypeError) { ::Crockford32.decode("16J", as: :apple) }
+  end
+
+  def test_decode_supports_checksum_verification
+    assert_equal 1234, ::Crockford32.decode("16JD", check: true), "decode('16JD', check: true)"
+    assert_equal 123456789, ::Crockford32.decode("3NQK8Nu", check: true), "decode('3NQK8Nu', check: true)"
+    assert_equal 1e20.to_i, ::Crockford32.decode("2PQHTY5NHH0000T", check: true), "decode('2PQHTY5NHH0000T', check: true)"
+    assert_equal 1234, ::Crockford32.decode("00-16-JD", check: true), "decode('00-16-JD', check: true)"
+  end
+
+  def test_checksum_mismatch_is_an_error
+    assert_raises(::Crockford32::ChecksumError) { ::Crockford32.decode("17JD", check: true) }
   end
 end

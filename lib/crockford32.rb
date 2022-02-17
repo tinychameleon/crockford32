@@ -37,6 +37,12 @@ module Crockford32
     'X' => 29, 'x' => 29,
     'Y' => 30, 'y' => 30,
     'Z' => 31, 'z' => 31,
+    # Check Exclusive Symbols
+    '*' => 32,
+    '~' => 33,
+    '$' => 34,
+    '=' => 35,
+    'U' => 36, 'u' => 36,
   }
 
   ENCODE_SYMBOLS = {
@@ -78,28 +84,23 @@ module Crockford32
     34 => '$',
     35 => '=',
     36 => 'U',
-    36 => 'u',
-  }
-
-  CHECKSUM_SYMBOLS = {
-    '*' => 32,
-    '~' => 33,
-    '$' => 34,
-    '=' => 35,
-    'U' => 36, 'u' => 36,
   }
 
   DASH = '-'.freeze
 
-  def self.decode(value, as: :number)
+  def self.decode(value, as: :number, check: false)
+    value, checksum = check ? [value[0...-1], value[-1]] : [value, nil]
     result = value.chars.each_with_index.reduce(0) do |result, ch_index|
       next result if ch_index[0] == DASH
-      begin
-        (result << 5) | DECODE_SYMBOLS.fetch(ch_index[0])
-      rescue KeyError
-        raise IllegalChecksumCharacterError.new(value, ch_index[1]) if CHECKSUM_SYMBOLS.key? ch_index[0]
-        raise InvalidCharacterError.new(value, ch_index[1])
-      end
+      val = DECODE_SYMBOLS[ch_index[0]]
+      raise InvalidCharacterError.new(value, ch_index[1]) if val.nil? || val > 31
+      (result << 5) | val
+    end
+
+    if check
+      actual = result % 37
+      required = DECODE_SYMBOLS[checksum]
+      raise ChecksumError.new(value, actual, required) if actual != required
     end
 
     case as
