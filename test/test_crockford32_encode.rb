@@ -81,6 +81,6 @@ class TestCrockford32Encode < Minitest::Test
   end
 
   def test_encode_with_an_unsupported_type_is_an_error
-    assert_raises(::Crockford32::UnsupportedTypeError) { ::Crockford32.encode(/abc/) }
+    assert_raises(::Crockford32::UnsupportedEncodingTypeError) { ::Crockford32.encode(/abc/) }
   end
 end

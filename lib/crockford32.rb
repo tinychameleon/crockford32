@@ -84,15 +84,26 @@ module Crockford32
 
   DASH = '-'.freeze
 
-  def self.decode(str)
-    str.chars.each_with_index.reduce(0) do |result, ch_index|
+  def self.decode(value, as: :number)
+    result = value.chars.each_with_index.reduce(0) do |result, ch_index|
       next result if ch_index[0] == DASH
       begin
         (result << 5) | DECODE_SYMBOLS.fetch(ch_index[0])
       rescue KeyError
-        raise IllegalChecksumCharacterError.new(str, ch_index[1]) if CHECKSUM_SYMBOLS.key? ch_index[0]
-        raise InvalidCharacterError.new(str, ch_index[1])
+        raise IllegalChecksumCharacterError.new(value, ch_index[1]) if CHECKSUM_SYMBOLS.key? ch_index[0]
+        raise InvalidCharacterError.new(value, ch_index[1])
       end
+    end
+
+    case as
+    when :number
+      result
+    when :string
+      q, r = result.bit_length.divmod(8)
+      q += 1 if r > 0
+      format("%0#{q * 8 >> 2}x", result).chars.each_slice(2).map { |a| a.join.to_i(16) }.pack('C*')
+    else
+      raise UnsupportedDecodingTypeError.new(as)
     end
   end
 
@@ -104,7 +115,7 @@ module Crockford32
       when Integer
         value
       else
-        raise UnsupportedTypeError.new(value.class)
+        raise UnsupportedEncodingTypeError.new(value.class)
       end,
       step,
       length

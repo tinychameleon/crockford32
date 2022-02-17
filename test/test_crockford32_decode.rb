@@ -78,4 +78,8 @@ class TestCrockford32Decode < Minitest::Test
   def test_unicode_symbols_mid_string_is_an_error
     assert_raises(::Crockford32::InvalidCharacterError) { ::Crockford32.decode('ABCé123') }
   end
+
+  def test_unsupported_decode_type_is_an_error
+    assert_raises(::Crockford32::UnsupportedDecodingTypeError) { ::Crockford32.decode("16J", as: :apple) }
+  end
 end
