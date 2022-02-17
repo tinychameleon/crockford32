@@ -8,6 +8,6 @@ class TestCrockford32 < Minitest::Test
   end
 
   # TODO:
-  # - Checksum validation
   # - Benchmark + optimize
+  # - Refactor
 end
