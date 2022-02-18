@@ -119,7 +119,12 @@ module Crockford32
     encode_number(
       case value
       when String
-        value.bytes.map { |i| format("%02x", i) }.join.to_i(16)
+        shift = 8 * (value.bytesize - 1)
+        value.each_byte.reduce(0) do |n, b|
+          x = b << shift
+          shift -= 8
+          n + x
+        end
       when Integer
         value
       else
