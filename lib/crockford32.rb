@@ -47,43 +47,7 @@ module Crockford32
   end
 
   def self.encode(value, step: nil, length: nil, check: false)
-    encode_number(
-      case value
-      when String
-        q, r = value.bytesize.divmod(8)
-        if r == 0
-          n = 0
-          bytes = value.bytes
-          while q > 0
-            s = (q - 1) * 0x40
-            i = q * 0x08
-            n += bytes[i - 1] << (s + 0x38)
-            n += bytes[i - 2] << (s + 0x30)
-            n += bytes[i - 3] << (s + 0x28)
-            n += bytes[i - 4] << (s + 0x20)
-            n += bytes[i - 5] << (s + 0x18)
-            n += bytes[i - 6] << (s + 0x10)
-            n += bytes[i - 7] << (s + 0x08)
-            n += bytes[i - 8] << (s + 0x00)
-            q -= 1
-          end
-          n
-        else
-          shift = -0x08
-          value.each_byte.reduce(0) do |n, b|
-            shift += 0x08
-            n + (b << shift)
-          end
-        end
-      when Integer
-        value
-      else
-        raise UnsupportedEncodingTypeError.new(value.class)
-      end,
-      step,
-      length,
-      check,
-    )
+    le_encode_number(raw_value_to_number(value), step, length, check)
   end
 
   private
@@ -120,7 +84,50 @@ module Crockford32
     bytes.pack('C*')
   end
 
-  def self.encode_number(number, step, length, check)
+  def self.raw_value_to_number(value)
+    case value
+    when String
+      q, r = value.bytesize.divmod(8)
+      if r == 0
+        string_to_number_unrolled value, q
+      else
+        string_to_number value
+      end
+    when Integer
+      value
+    else
+      raise UnsupportedEncodingTypeError.new value.class
+    end
+  end
+
+  def self.string_to_number(s)
+    shift = -0x08
+    s.each_byte.reduce(0) do |n, b|
+      shift += 0x08
+      n + (b << shift)
+    end
+  end
+
+  def self.string_to_number_unrolled(s, iterations)
+    n = 0
+    bytes = s.bytes
+    while iterations > 0
+      o = (iterations - 1) * 0x40
+      i = iterations * 0x08
+      n += bytes[i - 1] << (o + 0x38)
+      n += bytes[i - 2] << (o + 0x30)
+      n += bytes[i - 3] << (o + 0x28)
+      n += bytes[i - 4] << (o + 0x20)
+      n += bytes[i - 5] << (o + 0x18)
+      n += bytes[i - 6] << (o + 0x10)
+      n += bytes[i - 7] << (o + 0x08)
+      n += bytes[i - 8] << (o + 0x00)
+      iterations -= 1
+    end
+    n
+  end
+
+  def self.le_encode_number(number, step, length, check)
     result = +""
     n = number
     index = 1
