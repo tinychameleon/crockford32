@@ -4,6 +4,200 @@ require_relative "crockford32/version"
 require_relative "crockford32/errors"
 
 module Crockford32
+  ORDINALS = {"$"=>36,
+ "*"=>42,
+ "0"=>48,
+ "1"=>49,
+ "2"=>50,
+ "3"=>51,
+ "4"=>52,
+ "5"=>53,
+ "6"=>54,
+ "7"=>55,
+ "8"=>56,
+ "9"=>57,
+ "="=>61,
+ "A"=>65,
+ "B"=>66,
+ "C"=>67,
+ "D"=>68,
+ "E"=>69,
+ "F"=>70,
+ "G"=>71,
+ "H"=>72,
+ "I"=>73,
+ "J"=>74,
+ "K"=>75,
+ "L"=>76,
+ "M"=>77,
+ "N"=>78,
+ "O"=>79,
+ "P"=>80,
+ "Q"=>81,
+ "R"=>82,
+ "S"=>83,
+ "T"=>84,
+ "U"=>85,
+ "V"=>86,
+ "W"=>87,
+ "X"=>88,
+ "Y"=>89,
+ "Z"=>90,
+ "a"=>97,
+ "b"=>98,
+ "c"=>99,
+ "d"=>100,
+ "e"=>101,
+ "f"=>102,
+ "g"=>103,
+ "h"=>104,
+ "i"=>105,
+ "j"=>106,
+ "k"=>107,
+ "l"=>108,
+ "m"=>109,
+ "n"=>110,
+ "o"=>111,
+ "p"=>112,
+ "q"=>113,
+ "r"=>114,
+ "s"=>115,
+ "t"=>116,
+ "u"=>117,
+ "v"=>118,
+ "w"=>119,
+ "x"=>120,
+ "y"=>121,
+ "z"=>122,
+ "~"=>126}
+ DECODE_ARRAY = [nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ 34,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ 32,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ 0,
+ 1,
+ 2,
+ 3,
+ 4,
+ 5,
+ 6,
+ 7,
+ 8,
+ 9,
+ nil,
+ nil,
+ nil,
+ 35,
+ nil,
+ nil,
+ nil,
+ 10,
+ 11,
+ 12,
+ 13,
+ 14,
+ 15,
+ 16,
+ 17,
+ 1,
+ 18,
+ 19,
+ 1,
+ 20,
+ 21,
+ 0,
+ 22,
+ 23,
+ 24,
+ 25,
+ 26,
+ 36,
+ 27,
+ 28,
+ 29,
+ 30,
+ 31,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ nil,
+ 10,
+ 11,
+ 12,
+ 13,
+ 14,
+ 15,
+ 16,
+ 17,
+ 1,
+ 18,
+ 19,
+ 1,
+ 20,
+ 21,
+ 0,
+ 22,
+ 23,
+ 24,
+ 25,
+ 26,
+ 36,
+ 27,
+ 28,
+ 29,
+ 30,
+ 31,
+ nil,
+ nil,
+ nil,
+ 33]
+
   DECODE_SYMBOLS = {
     '0' => 0, 'O' => 0, 'o' => 0,
     '1' => 1, 'I' => 1, 'i' => 1, 'L' => 1, 'l' => 1,
@@ -86,15 +280,19 @@ module Crockford32
     'U',
   ].freeze
 
-  DASH = '-'.freeze
+  DASH = '-'.ord.freeze
 
   def self.decode(value, as: :number, check: false)
-    value, checksum = check ? [value[0...-1], value[-1]] : [value, nil]
-    result = value.chars.each_with_index.reduce(0) do |result, ch_index|
-      next result if ch_index[0] == DASH
-      val = DECODE_SYMBOLS[ch_index[0]]
-      raise InvalidCharacterError.new(value, ch_index[1]) if val.nil? || val > 31
-      (result << 5) | val
+    checksum = check ? value[-1] : nil
+    value = check ? value[0...-1] : value
+    value_index, shift_bits = -1, -0x05
+    result = value.bytes.reduce(0) do |result, ch|
+      value_index += 1
+      next result if ch == DASH
+      val = DECODE_ARRAY[ch.ord]
+      raise InvalidCharacterError.new(value, value_index) if val.nil? || val >= 0x20
+      shift_bits += 0x05
+      result | (val << shift_bits)
     end
 
     if check
@@ -107,9 +305,11 @@ module Crockford32
     when :number
       result
     when :string
-      q, r = result.bit_length.divmod(8)
+      q, r = result.bit_length.divmod(0x08)
       q += 1 if r > 0
-      format("%0#{q * 8 >> 2}x", result).chars.each_slice(2).map { |a| a.join.to_i(16) }.pack('C*')
+      bytes = Array.new(q)
+      q.times { |i| bytes[i] = result & 0xff; result >>= 0x08 }
+      bytes.pack('C*')
     else
       raise UnsupportedDecodingTypeError.new(as)
     end
@@ -119,11 +319,30 @@ module Crockford32
     encode_number(
       case value
       when String
-        shift = 8 * (value.bytesize - 1)
-        value.each_byte.reduce(0) do |n, b|
-          x = b << shift
-          shift -= 8
-          n + x
+        q, r = value.bytesize.divmod(8)
+        if r == 0
+          n = 0
+          bytes = value.bytes
+          while q > 0
+            s = (q - 1) * 0x40
+            i = q * 0x08
+            n += bytes[i - 1] << (s + 0x38)
+            n += bytes[i - 2] << (s + 0x30)
+            n += bytes[i - 3] << (s + 0x28)
+            n += bytes[i - 4] << (s + 0x20)
+            n += bytes[i - 5] << (s + 0x18)
+            n += bytes[i - 6] << (s + 0x10)
+            n += bytes[i - 7] << (s + 0x08)
+            n += bytes[i - 8] << (s + 0x00)
+            q -= 1
+          end
+          n
+        else
+          shift = -0x08
+          value.each_byte.reduce(0) do |n, b|
+            shift += 0x08
+            n + (b << shift)
+          end
         end
       when Integer
         value
@@ -139,21 +358,32 @@ module Crockford32
   private
 
   def self.encode_number(number, step, length, check)
-    result = +(check ? ENCODE_SYMBOLS[number % 37] : "")
-    index = check ? 2 : 1
+    result = +""
+    n = number
+    index = 1
     loop do
-      chunk = number & 0x1F
+      chunk = n & 0x1F
       result << ENCODE_SYMBOLS[chunk]
       result << DASH if step && index % step == 0
-      number /= 0x20
-      break if number == 0
+      n >>= 0x05
       index += 1
+      break if n == 0
     end
 
+    rlen = result.length + (check ? 1 : 0)
     if length
-      raise LengthTooSmallError.new(number, result.length, length) if result.length > length
-      (length - result.length).times { result << +"0" } if length
+      raise LengthTooSmallError.new(number, rlen, length) if rlen > length
+      length -= 1 if check
+      while result.length < length
+        result << +"0"
+        break if result.length == length
+        result << DASH if step && index % step == 0
+        break if result.length == length
+        index += 1
+      end
     end
-    result.reverse!
+
+    result << ENCODE_SYMBOLS[number % 37] if check
+    result
   end
 end

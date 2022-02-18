@@ -55,20 +55,20 @@ class TestCrockford32Decode < Minitest::Test
   end
 
   def test_simple_encodings_decode_correctly
-    assert_equal 1234, ::Crockford32.decode("16J"), "decode('16J')"
-    assert_equal 123456789012345, ::Crockford32.decode("3G9230VQVS"), "decode('3G9230VQVS')"
-    assert_equal 1e20.to_i, ::Crockford32.decode("2pqhty5nhhoooo"), "decode('2pqhty5nhhoooo')"
+    assert_equal 1234, ::Crockford32.decode("J61"), "decode('J61')"
+    assert_equal 123456789012345, ::Crockford32.decode("SVQV0329G3"), "decode('SVQV0329G3')"
+    assert_equal 1e20.to_i, ::Crockford32.decode("0000hhn5ythqp2"), "decode('0000hhn5ythqp2')"
   end
 
   def test_confusing_symbols_decode_correctly
-    assert_equal 33587232, ::Crockford32.decode("101o1O"), "decode('101o1O')"
-    assert_equal 33825, ::Crockford32.decode("IiLl"), "decode('IiLl')"
+    assert_equal 33587232, ::Crockford32.decode("O1o101"), "decode('O1o101')"
+    assert_equal 33825, ::Crockford32.decode("lLiI"), "decode('lLiI')"
   end
 
   def test_decode_supports_arbitrary_dashes
-    assert_equal 1234, ::Crockford32.decode("16-J"), "decode('16-J')"
-    assert_equal 123456789012345, ::Crockford32.decode("3G-923-0VQ-VS"), "decode('3G-923-0VQ-VS')"
-    assert_equal 1e20.to_i, ::Crockford32.decode("2pqhty5-nhhoooo"), "decode('2pqhty5-nhhoooo')"
+    assert_equal 1234, ::Crockford32.decode("J-61"), "decode('J-61')"
+    assert_equal 123456789012345, ::Crockford32.decode("SV-QV0-32-9G3"), "decode('SV-QV0-32-9G3')"
+    assert_equal 1e20.to_i, ::Crockford32.decode("0000hhn-5ythqp2"), "decode('0000hhn-5ythqp2')"
   end
 
   def test_checksum_symbols_mid_string_is_an_error
@@ -80,17 +80,17 @@ class TestCrockford32Decode < Minitest::Test
   end
 
   def test_unsupported_decode_type_is_an_error
-    assert_raises(::Crockford32::UnsupportedDecodingTypeError) { ::Crockford32.decode("16J", as: :apple) }
+    assert_raises(::Crockford32::UnsupportedDecodingTypeError) { ::Crockford32.decode("J61", as: :apple) }
   end
 
   def test_decode_supports_checksum_verification
-    assert_equal 1234, ::Crockford32.decode("16JD", check: true), "decode('16JD', check: true)"
-    assert_equal 123456789, ::Crockford32.decode("3NQK8Nu", check: true), "decode('3NQK8Nu', check: true)"
-    assert_equal 1e20.to_i, ::Crockford32.decode("2PQHTY5NHH0000T", check: true), "decode('2PQHTY5NHH0000T', check: true)"
-    assert_equal 1234, ::Crockford32.decode("00-16-JD", check: true), "decode('00-16-JD', check: true)"
+    assert_equal 1234, ::Crockford32.decode("J61D", check: true), "decode('16JD', check: true)"
+    assert_equal 123456789, ::Crockford32.decode("N8KQN3u", check: true), "decode('N8KQN3u', check: true)"
+    assert_equal 1e20.to_i, ::Crockford32.decode("0000hhn5ythqp2T", check: true), "decode('0000hhn5ythqp2T', check: true)"
+    assert_equal 1234, ::Crockford32.decode("J6-10-0D", check: true), "decode('J6-10-0D', check: true)"
   end
 
   def test_checksum_mismatch_is_an_error
-    assert_raises(::Crockford32::ChecksumError) { ::Crockford32.decode("17JD", check: true) }
+    assert_raises(::Crockford32::ChecksumError) { ::Crockford32.decode("J71D", check: true) }
   end
 end
