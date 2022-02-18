@@ -49,15 +49,15 @@ These benchmarks are representative of performance on a constant 16 bytes of dat
 
 ```
 ~/…/crockford32› date && ruby test/benchmarks/current.rb
-Fri Feb 18 11:29:28 PST 2022
+Fri Feb 18 15:35:49 PST 2022
 Warming up --------------------------------------
-              encode    11.234k i/100ms
-              decode    11.369k i/100ms
-       encode string     8.012k i/100ms
-       decode string     7.097k i/100ms
+              encode    11.498k i/100ms
+              decode    10.550k i/100ms
+       encode string     7.686k i/100ms
+       decode string     6.798k i/100ms
 Calculating -------------------------------------
-              encode    116.742k (± 3.4%) i/s -    584.168k in   5.009868s
-              decode    114.187k (± 2.9%) i/s -    579.819k in   5.082251s
-       encode string     79.347k (± 3.4%) i/s -    400.600k in   5.054837s
-       decode string     71.833k (± 2.7%) i/s -    361.947k in   5.042572s
+              encode    117.614k (± 3.5%) i/s -    597.896k in   5.090119s
+              decode    108.253k (± 3.2%) i/s -    548.600k in   5.073326s
+       encode string     78.690k (± 3.1%) i/s -    399.672k in   5.084255s
+       decode string     69.707k (± 3.5%) i/s -    353.496k in   5.077700s
 ```
