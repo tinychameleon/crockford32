@@ -46,8 +46,8 @@ module Crockford32
     convert result, into
   end
 
-  def self.encode(value, step: nil, length: nil, check: false)
-    le_encode_number(raw_value_to_number(value), step, length, check)
+  def self.encode(value, length: nil, check: false)
+    le_encode_number(raw_value_to_number(value), length, check)
   end
 
   private
@@ -127,33 +127,23 @@ module Crockford32
     n
   end
 
-  def self.le_encode_number(number, step, length, check)
+  def self.le_encode_number(number, length, check)
     result = +""
     n = number
-    index = 1
     loop do
       chunk = n & 0x1F
       result << ENCODE_SYMBOLS[chunk]
-      result << DASH if step && index % step == 0
       n >>= ENCODED_BITS
-      index += 1
       break if n == 0
     end
 
     rlen = result.length + (check ? 1 : 0)
     if length
       raise LengthTooSmallError.new(number, rlen, length) if rlen > length
-      length -= 1 if check
-      while result.length < length
-        result << +"0"
-        break if result.length == length
-        result << DASH if step && index % step == 0
-        break if result.length == length
-        index += 1
-      end
+      result << "0" * (length - rlen)
     end
 
     result << ENCODE_SYMBOLS[number % CHECKSUM_PRIME] if check
-    result
+    result.freeze
   end
 end

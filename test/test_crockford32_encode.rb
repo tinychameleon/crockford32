@@ -21,16 +21,8 @@ class TestCrockford32Encode < Minitest::Test
     assert_equal "0000HHN5YTHQP2", ::Crockford32.encode(1e20.to_i)
   end
 
-  def test_encode_can_insert_dashes_at_steps
-    assert_equal "SVQ-V03-29G-3", ::Crockford32.encode(123456789012345, step: 3)
-  end
-
   def test_encode_can_pad_to_a_length
     assert_equal "J6100", ::Crockford32.encode(1234, length: 5)
-  end
-
-  def test_encode_can_pad_and_insert_dashes
-    assert_equal "J6-10", ::Crockford32.encode(1234, length: 5, step: 2)
   end
 
   def test_encode_with_a_length_smaller_than_the_result_is_an_error
@@ -47,11 +39,14 @@ class TestCrockford32Encode < Minitest::Test
     assert_equal "0000HHN5YTHQP2T", ::Crockford32.encode(1e20.to_i, check: true)
   end
 
-  def test_encode_can_pad_and_insert_dashes_and_include_a_checksum
-    assert_equal "J6-10-00D", ::Crockford32.encode(1234, step: 2, length: 9, check: true)
-    assert_equal "J6-10-0D", ::Crockford32.encode(1234, step: 2, length: 8, check: true)
-    assert_equal "J6-10-D", ::Crockford32.encode(1234, step: 2, length: 7, check: true)
-    assert_equal "J6-10D", ::Crockford32.encode(1234, step: 2, length: 6, check: true)
-    assert_equal "J6-1D", ::Crockford32.encode(1234, step: 2, length: 5, check: true)
+  def test_encode_can_pad_and_include_a_checksum
+    assert_equal "J61000D", ::Crockford32.encode(1234, length: 7, check: true)
+    assert_equal "J6100D", ::Crockford32.encode(1234, length: 6, check: true)
+    assert_equal "J610D", ::Crockford32.encode(1234, length: 5, check: true)
+    assert_equal "J61D", ::Crockford32.encode(1234, length: 4, check: true)
+  end
+
+  def test_encode_returns_a_frozen_string
+    assert ::Crockford32.encode(1234).frozen?
   end
 end
