@@ -4,315 +4,52 @@ require_relative "crockford32/version"
 require_relative "crockford32/errors"
 
 module Crockford32
-  ORDINALS = {"$"=>36,
- "*"=>42,
- "0"=>48,
- "1"=>49,
- "2"=>50,
- "3"=>51,
- "4"=>52,
- "5"=>53,
- "6"=>54,
- "7"=>55,
- "8"=>56,
- "9"=>57,
- "="=>61,
- "A"=>65,
- "B"=>66,
- "C"=>67,
- "D"=>68,
- "E"=>69,
- "F"=>70,
- "G"=>71,
- "H"=>72,
- "I"=>73,
- "J"=>74,
- "K"=>75,
- "L"=>76,
- "M"=>77,
- "N"=>78,
- "O"=>79,
- "P"=>80,
- "Q"=>81,
- "R"=>82,
- "S"=>83,
- "T"=>84,
- "U"=>85,
- "V"=>86,
- "W"=>87,
- "X"=>88,
- "Y"=>89,
- "Z"=>90,
- "a"=>97,
- "b"=>98,
- "c"=>99,
- "d"=>100,
- "e"=>101,
- "f"=>102,
- "g"=>103,
- "h"=>104,
- "i"=>105,
- "j"=>106,
- "k"=>107,
- "l"=>108,
- "m"=>109,
- "n"=>110,
- "o"=>111,
- "p"=>112,
- "q"=>113,
- "r"=>114,
- "s"=>115,
- "t"=>116,
- "u"=>117,
- "v"=>118,
- "w"=>119,
- "x"=>120,
- "y"=>121,
- "z"=>122,
- "~"=>126}
- DECODE_ARRAY = [nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- 34,
- nil,
- nil,
- nil,
- nil,
- nil,
- 32,
- nil,
- nil,
- nil,
- nil,
- nil,
- 0,
- 1,
- 2,
- 3,
- 4,
- 5,
- 6,
- 7,
- 8,
- 9,
- nil,
- nil,
- nil,
- 35,
- nil,
- nil,
- nil,
- 10,
- 11,
- 12,
- 13,
- 14,
- 15,
- 16,
- 17,
- 1,
- 18,
- 19,
- 1,
- 20,
- 21,
- 0,
- 22,
- 23,
- 24,
- 25,
- 26,
- 36,
- 27,
- 28,
- 29,
- 30,
- 31,
- nil,
- nil,
- nil,
- nil,
- nil,
- nil,
- 10,
- 11,
- 12,
- 13,
- 14,
- 15,
- 16,
- 17,
- 1,
- 18,
- 19,
- 1,
- 20,
- 21,
- 0,
- 22,
- 23,
- 24,
- 25,
- 26,
- 36,
- 27,
- 28,
- 29,
- 30,
- 31,
- nil,
- nil,
- nil,
- 33]
+  ENCODED_BITS = 0x05
+  CHECKSUM_PRIME = 0x25
+  DASH = "-".ord.freeze
 
-  DECODE_SYMBOLS = {
-    '0' => 0, 'O' => 0, 'o' => 0,
-    '1' => 1, 'I' => 1, 'i' => 1, 'L' => 1, 'l' => 1,
-    '2' => 2,
-    '3' => 3,
-    '4' => 4,
-    '5' => 5,
-    '6' => 6,
-    '7' => 7,
-    '8' => 8,
-    '9' => 9,
-    'A' => 10, 'a' => 10,
-    'B' => 11, 'b' => 11,
-    'C' => 12, 'c' => 12,
-    'D' => 13, 'd' => 13,
-    'E' => 14, 'e' => 14,
-    'F' => 15, 'f' => 15,
-    'G' => 16, 'g' => 16,
-    'H' => 17, 'h' => 17,
-    'J' => 18, 'j' => 18,
-    'K' => 19, 'k' => 19,
-    'M' => 20, 'm' => 20,
-    'N' => 21, 'n' => 21,
-    'P' => 22, 'p' => 22,
-    'Q' => 23, 'q' => 23,
-    'R' => 24, 'r' => 24,
-    'S' => 25, 's' => 25,
-    'T' => 26, 't' => 26,
-    'V' => 27, 'v' => 27,
-    'W' => 28, 'w' => 28,
-    'X' => 29, 'x' => 29,
-    'Y' => 30, 'y' => 30,
-    'Z' => 31, 'z' => 31,
-    # Check Exclusive Symbols
-    '*' => 32,
-    '~' => 33,
-    '$' => 34,
-    '=' => 35,
-    'U' => 36, 'u' => 36,
-  }
-
-  ENCODE_SYMBOLS = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'J',
-    'K',
-    'M',
-    'N',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
-    # Check Exclusive Symbols
-    '*',
-    '~',
-    '$',
-    '=',
-    'U',
+  # standard:disable Layout/ExtraSpacing,Layout/ArrayAlignment
+  DECODE_ORDINALS = [
+    nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil,
+    nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil,
+    nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil,
+     34, nil, nil, nil, nil, nil,  32, nil, nil, nil, nil, nil,
+      0,   1,   2,   3,   4,   5,   6,   7,   8,   9, nil, nil,
+    nil,  35, nil, nil, nil,  10,  11,  12,  13,  14,  15,  16,
+     17,   1,  18,  19,   1,  20,  21,   0,  22,  23,  24,  25,
+     26,  36,  27,  28,  29,  30,  31, nil, nil, nil, nil, nil,
+    nil,  10,  11,  12,  13,  14,  15,  16,  17,   1,  18,  19,
+      1,  20,  21,   0,  22,  23,  24,  25,  26,  36,  27,  28,
+     29,  30,  31, nil, nil, nil,  33
   ].freeze
 
-  DASH = '-'.ord.freeze
+  ENCODE_SYMBOLS = [
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+    'G', 'H', 'J', 'K', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z',
+    '*', '~', '$', '=', 'U'
+  ].freeze
+  # standard:enable Layout/ExtraSpacing,Layout/ArrayAlignment
 
   def self.decode(value, as: :number, check: false)
     checksum = check ? value[-1] : nil
     value = check ? value[0...-1] : value
-    value_index, shift_bits = -1, -0x05
+    value_index, shift_bits = -1, -ENCODED_BITS
     result = value.bytes.reduce(0) do |result, ch|
       value_index += 1
       next result if ch == DASH
-      val = DECODE_ARRAY[ch.ord]
+      val = DECODE_ORDINALS[ch.ord]
       raise InvalidCharacterError.new(value, value_index) if val.nil? || val >= 0x20
-      shift_bits += 0x05
+      shift_bits += ENCODED_BITS
       result | (val << shift_bits)
     end
 
     if check
-      actual = result % 37
-      required = DECODE_SYMBOLS[checksum]
+      actual = result % CHECKSUM_PRIME
+      required = DECODE_ORDINALS[checksum.ord]
       raise ChecksumError.new(value, actual, required) if actual != required
     end
 
-    case as
-    when :number
-      result
-    when :string
-      q, r = result.bit_length.divmod(0x08)
-      q += 1 if r > 0
-      bytes = Array.new(q)
-      q.times { |i| bytes[i] = result & 0xff; result >>= 0x08 }
-      bytes.pack('C*')
-    else
-      raise UnsupportedDecodingTypeError.new(as)
-    end
+    into_type as, result
   end
 
   def self.encode(value, step: nil, length: nil, check: false)
@@ -357,6 +94,25 @@ module Crockford32
 
   private
 
+  def self.into_type(type, result)
+    case type
+    when :number
+      result
+    when :string
+      into_string result
+    else
+      raise UnsupportedDecodingTypeError.new(type)
+    end
+  end
+
+  def self.into_string(result)
+    q, r = result.bit_length.divmod(0x08)
+    q += 1 if r > 0
+    bytes = Array.new(q)
+    q.times { |i| bytes[i] = result & 0xff; result >>= 0x08 }
+    bytes.pack('C*')
+  end
+
   def self.encode_number(number, step, length, check)
     result = +""
     n = number
@@ -365,7 +121,7 @@ module Crockford32
       chunk = n & 0x1F
       result << ENCODE_SYMBOLS[chunk]
       result << DASH if step && index % step == 0
-      n >>= 0x05
+      n >>= ENCODED_BITS
       index += 1
       break if n == 0
     end
@@ -383,7 +139,7 @@ module Crockford32
       end
     end
 
-    result << ENCODE_SYMBOLS[number % 37] if check
+    result << ENCODE_SYMBOLS[number % CHECKSUM_PRIME] if check
     result
   end
 end
