@@ -4,6 +4,7 @@ module Crockford32
   class Error < StandardError; end
 
   class EncodeError < Error; end
+
   class DecodeError < Error; end
 
   class LengthTooSmallError < EncodeError

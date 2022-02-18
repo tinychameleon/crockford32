@@ -25,9 +25,9 @@ module Crockford32
   ].freeze
 
   ENCODE_SYMBOLS = [
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
-    'G', 'H', 'J', 'K', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z',
-    '*', '~', '$', '=', 'U'
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F",
+    "G", "H", "J", "K", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z",
+    "*", "~", "$", "=", "U"
   ].freeze
   # standard:enable Layout/ExtraSpacing,Layout/ArrayAlignment
 
@@ -50,7 +50,7 @@ module Crockford32
     le_encode_number(raw_value_to_number(value), length, check)
   end
 
-  private
+  # lksdjflsad
 
   def self.le_decode_number(encoded_value)
     symbol = -1
@@ -80,8 +80,11 @@ module Crockford32
     q, r = result.bit_length.divmod(0x08)
     q += 1 if r > 0
     bytes = Array.new(q)
-    q.times { |i| bytes[i] = result & 0xff; result >>= 0x08 }
-    bytes.pack('C*')
+    q.times do |i|
+      bytes[i] = result & 0xff
+      result >>= 0x08
+    end
+    bytes.pack("C*")
   end
 
   def self.raw_value_to_number(value)
@@ -146,4 +149,7 @@ module Crockford32
     result << ENCODE_SYMBOLS[number % CHECKSUM_PRIME] if check
     result.freeze
   end
+
+  private_class_method [:le_decode_number, :convert, :into_string, :raw_value_to_number,
+    :string_to_number, :string_to_number_unrolled, :le_encode_number]
 end

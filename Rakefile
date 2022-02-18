@@ -15,5 +15,5 @@ task default: %i[test standard]
 
 desc "Benchmark the current implementation"
 task benchmark: [] do |t|
-  sh 'date; ruby test/benchmarks/current.rb'
+  sh "date; ruby test/benchmarks/current.rb"
 end
