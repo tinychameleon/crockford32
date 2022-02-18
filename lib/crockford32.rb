@@ -45,46 +45,46 @@ module Crockford32
     'U' => 36, 'u' => 36,
   }
 
-  ENCODE_SYMBOLS = {
-    0 => '0',
-    1 => '1',
-    2 => '2',
-    3 => '3',
-    4 => '4',
-    5 => '5',
-    6 => '6',
-    7 => '7',
-    8 => '8',
-    9 => '9',
-    10 => 'A',
-    11 => 'B',
-    12 => 'C',
-    13 => 'D',
-    14 => 'E',
-    15 => 'F',
-    16 => 'G',
-    17 => 'H',
-    18 => 'J',
-    19 => 'K',
-    20 => 'M',
-    21 => 'N',
-    22 => 'P',
-    23 => 'Q',
-    24 => 'R',
-    25 => 'S',
-    26 => 'T',
-    27 => 'V',
-    28 => 'W',
-    29 => 'X',
-    30 => 'Y',
-    31 => 'Z',
+  ENCODE_SYMBOLS = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'J',
+    'K',
+    'M',
+    'N',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
     # Check Exclusive Symbols
-    32 => '*',
-    33 => '~',
-    34 => '$',
-    35 => '=',
-    36 => 'U',
-  }
+    '*',
+    '~',
+    '$',
+    '=',
+    'U',
+  ].freeze
 
   DASH = '-'.freeze
 
@@ -134,12 +134,12 @@ module Crockford32
   private
 
   def self.encode_number(number, step, length, check)
-    result = check ? ENCODE_SYMBOLS[number % 37] : ""
+    result = +(check ? ENCODE_SYMBOLS[number % 37] : "")
     index = check ? 2 : 1
     loop do
       chunk = number & 0x1F
-      result += ENCODE_SYMBOLS[chunk]
-      result += DASH if step && index % step == 0
+      result << ENCODE_SYMBOLS[chunk]
+      result << DASH if step && index % step == 0
       number /= 0x20
       break if number == 0
       index += 1
@@ -147,8 +147,8 @@ module Crockford32
 
     if length
       raise LengthTooSmallError.new(number, result.length, length) if result.length > length
-      result = result.ljust(length, "0") if length
+      (length - result.length).times { result << +"0" } if length
     end
-    result.reverse
+    result.reverse!
   end
 end
