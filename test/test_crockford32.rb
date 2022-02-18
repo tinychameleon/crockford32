@@ -6,8 +6,4 @@ class TestCrockford32 < Minitest::Test
   def test_it_has_a_version_number
     refute_nil ::Crockford32::VERSION
   end
-
-  # TODO:
-  # - Benchmark + optimize
-  # - Refactor
 end
