@@ -80,7 +80,7 @@ class TestCrockford32Decode < Minitest::Test
   end
 
   def test_unsupported_decode_type_is_an_error
-    assert_raises(::Crockford32::UnsupportedDecodingTypeError) { ::Crockford32.decode("J61", as: :apple) }
+    assert_raises(::Crockford32::UnsupportedDecodingTypeError) { ::Crockford32.decode("J61", into: :apple) }
   end
 
   def test_decode_supports_checksum_verification

@@ -5,6 +5,7 @@ require_relative "crockford32/errors"
 
 module Crockford32
   ENCODED_BITS = 0x05
+  CHECK_SYMBOL_MIN_VALUE = 0x20
   CHECKSUM_PRIME = 0x25
   DASH = "-".ord.freeze
 
@@ -30,18 +31,11 @@ module Crockford32
   ].freeze
   # standard:enable Layout/ExtraSpacing,Layout/ArrayAlignment
 
-  def self.decode(value, as: :number, check: false)
+  def self.decode(value, into: :number, check: false)
     checksum = check ? value[-1] : nil
     value = check ? value[0...-1] : value
-    value_index, shift_bits = -1, -ENCODED_BITS
-    result = value.bytes.reduce(0) do |result, ch|
-      value_index += 1
-      next result if ch == DASH
-      val = DECODE_ORDINALS[ch.ord]
-      raise InvalidCharacterError.new(value, value_index) if val.nil? || val >= 0x20
-      shift_bits += ENCODED_BITS
-      result | (val << shift_bits)
-    end
+
+    result = le_decode_number value
 
     if check
       actual = result % CHECKSUM_PRIME
@@ -49,7 +43,7 @@ module Crockford32
       raise ChecksumError.new(value, actual, required) if actual != required
     end
 
-    into_type as, result
+    convert result, into
   end
 
   def self.encode(value, step: nil, length: nil, check: false)
@@ -94,7 +88,20 @@ module Crockford32
 
   private
 
-  def self.into_type(type, result)
+  def self.le_decode_number(encoded_value)
+    symbol = -1
+    bits = -ENCODED_BITS
+    encoded_value.bytes.reduce(0) do |result, ch|
+      symbol += 1
+      next result if ch == DASH
+      val = DECODE_ORDINALS[ch.ord]
+      raise InvalidCharacterError.new(encoded_value, symbol) if val.nil? || val >= CHECK_SYMBOL_MIN_VALUE
+      bits += ENCODED_BITS
+      result | (val << bits)
+    end
+  end
+
+  def self.convert(result, type)
     case type
     when :number
       result

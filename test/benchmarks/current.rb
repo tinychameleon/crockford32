@@ -23,6 +23,6 @@ Benchmark.ips do |b|
   end
 
   b.report("decode string") do |n|
-    n.times { Crockford32.decode(data, as: :string) }
+    n.times { Crockford32.decode(data, into: :string) }
   end
 end
