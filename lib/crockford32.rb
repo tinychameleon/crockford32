@@ -31,7 +31,7 @@ module Crockford32
   ].freeze
   # standard:enable Layout/ExtraSpacing,Layout/ArrayAlignment
 
-  def self.decode(value, into: :number, check: false)
+  def self.decode(value, into: :integer, check: false)
     checksum = check ? value[-1] : nil
     value = check ? value[0...-1] : value
 
@@ -67,7 +67,7 @@ module Crockford32
 
   def self.convert(result, type)
     case type
-    when :number
+    when :integer
       result
     when :string
       into_string result
