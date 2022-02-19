@@ -50,7 +50,9 @@ module Crockford32
     le_encode_number(raw_value_to_number(value), length, check)
   end
 
-  # lksdjflsad
+  #
+  # Private Methods
+  #
 
   def self.le_decode_number(encoded_value)
     symbol = -1
