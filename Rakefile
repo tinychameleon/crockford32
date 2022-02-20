@@ -13,7 +13,7 @@ end
 
 YARD::Rake::YardocTask.new do |t|
   t.files = ["lib/**/*.rb", "-", "CHANGELOG.md"]
-  t.options = ["--private"]
+  t.options = ["--private", "-o", "./docs"]
 end
 
 task default: %i[test standard]
