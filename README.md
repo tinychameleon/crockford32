@@ -24,12 +24,17 @@ Encode data with the `encode` method:
 ```ruby
 encoded = Crockford32.encode(1234) # encoded = "J61"
 ```
+See the [the encode API documentation for error details](https://tinychameleon.github.io/crockford32/Crockford32.html#encode-class_method).
+
+---
 
 Decode a value with the `decode` method:
 
 ```ruby
 decoded = Crockford32.decode("J61") # decoded = 1234
 ```
+See the [the decode API documentation for error details](https://tinychameleon.github.io/crockford32/Crockford32.html#decode-class_method).
+
 
 ### Strings
 You can also encode and decode strings by providing the `:string` value as the `into:` argument to `decode`.
