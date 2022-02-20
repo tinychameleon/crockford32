@@ -129,14 +129,21 @@ Do the following to release a new version of this gem:
 - Update the version number in [lib/crockford32/version.rb](./lib/crockford32/version.rb)
 - Ensure necessary documentation changes are complete
 - Ensure changes are in the [CHANGELOG.md](./CHANGELOG.md)
-- Generate the updated documentation with `bundle exec rake yard`
 - Create the new release using `bundle exec rake release`
 
 After this is done the following side-effects should be visible:
 
 - A new git tag for the version number should exist
-- Commits for the new version and documentation should be pushed to GitHub
+- Commits for the new version should be pushed to GitHub
 - The new gem should be available on [rubygems.org](https://rubygems.org).
+
+Finally, update the documentation hosted on GitHub Pages:
+
+- Check-out the `gh-pages` branch
+- Merge `main` into the `gh-pages` branch
+- Generate the documentation with `bundle exec rake yard`
+- Commit the documentation on the `gh-pages` branch
+- Push the new documentation so GitHub Pages can deploy it
 
 
 ## Benchmarks
