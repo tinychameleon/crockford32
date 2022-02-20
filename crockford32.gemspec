@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Stephan Tarulli"]
   spec.email = ["srt@tinychameleon.com"]
 
-  spec.summary = "A fast implementation of Crockford's Base32 specification."
-  spec.description = "A fast implementation of Crockford's Base32 specification."
+  spec.summary = "A fast little-endian implementation of Crockford's Base32 specification."
+  spec.description = "A fast little-endian implementation of Crockford's Base32 specification."
   spec.homepage = "https://github.com/tinychameleon/crockford32"
   spec.required_ruby_version = ">= 2.6.0"
 
