@@ -3,13 +3,25 @@
 require_relative "crockford32/version"
 require_relative "crockford32/errors"
 
+# A fast little-endian implementation of {https://www.crockford.com/base32.html Douglas Crockford’s Base32 specification}.
+#
+# @since 1.0.0
 module Crockford32
+  # The number of bits encoded per symbol.
   ENCODED_BITS = 0x05
+
+  # The minimum value of a check symbol.
   CHECK_SYMBOL_MIN_VALUE = 0x20
+
+  # The prime number used to implement error detection.
   CHECKSUM_PRIME = 0x25
+
+  # The ordinal value of an ASCII dash character.
   DASH = "-".ord.freeze
 
   # standard:disable Layout/ExtraSpacing,Layout/ArrayAlignment
+
+  # Symbol values in order by encoded ASCII ordinal values.
   DECODE_ORDINALS = [
     nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil,
     nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil,
@@ -24,13 +36,31 @@ module Crockford32
      29,  30,  31, nil, nil, nil,  33
   ].freeze
 
+  # Encoding symbols ordered by bit value.
   ENCODE_SYMBOLS = [
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F",
     "G", "H", "J", "K", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z",
     "*", "~", "$", "=", "U"
   ].freeze
+
   # standard:enable Layout/ExtraSpacing,Layout/ArrayAlignment
 
+  # @!group Public Methods
+
+  # Decode a Base32 value.
+  #
+  # @since 1.0.0
+  #
+  # @param value [String] the Base32 value to decode.
+  # @param into [Symbol] the destination type to decode into. Can be +:integer+ or +:string+.
+  # @param check [Boolean] whether to validate the check symbol.
+  #
+  # @return [Integer, String] the decoded value.
+  #
+  # @raise [ChecksumError] when the check symbol does not match the decoded checksum.
+  # @raise [InvalidCharacterError] when the value being decoded has a character outside the
+  #   Base32 symbol set or a misplaced check symbol.
+  # @raise [UnsupportedDecodingTypeError] when the requested +into:+ type is not supported.
   def self.decode(value, into: :integer, check: false)
     checksum = check ? value[-1] : nil
     value = check ? value[0...-1] : value
@@ -46,14 +76,31 @@ module Crockford32
     convert result, into
   end
 
+  # Encode a value as Base32.
+  #
+  # @since 1.0.0
+  #
+  # @param value [Integer, String] the value to encode.
+  # @param length [Integer] the exact length of the Base32 string. Will be padded with "0" to meet length.
+  # @param check [Boolean] whether to include a check symbol. This symbol is included in the length.
+  #
+  # @return [String] the encoded value.
+  #
+  # @raise [LengthTooSmallError] when the requested +length:+ is not large enough to fit the encoded result.
+  # @raise [UnsupportedEncodingTypeError] when the value to encode is an unsupported type.
   def self.encode(value, length: nil, check: false)
     le_encode_number(raw_value_to_number(value), length, check)
   end
 
-  #
-  # Private Methods
-  #
+  # @!endgroup
 
+  # @!group Private Methods
+  # @!visibility private
+
+  # Decode a value with the expectation that it is in little-endian order.
+  #
+  # @param encoded_value [String] the value to decode.
+  # @return [Integer] the decoded value.
   def self.le_decode_number(encoded_value)
     symbol = -1
     bits = -ENCODED_BITS
@@ -67,6 +114,11 @@ module Crockford32
     end
   end
 
+  # Convert a decoded result into the destination type.
+  #
+  # @param result [Integer] the decoded value.
+  # @param type [Symbol] the destination type for the value. Can be +:integer+ or +:string+.
+  # @return [Integer, String] the decoded value converted to the destination type.
   def self.convert(result, type)
     case type
     when :integer
@@ -78,6 +130,12 @@ module Crockford32
     end
   end
 
+  # Convert an Integer into a String.
+  #
+  # Each 8-bit sequence is packed into a String in little-endian order.
+  #
+  # @param result [Integer] the decoded value.
+  # @return [String] the decoded value as a String.
   def self.into_string(result)
     q, r = result.bit_length.divmod(0x08)
     q += 1 if r > 0
@@ -89,14 +147,18 @@ module Crockford32
     bytes.pack("C*")
   end
 
+  # Convert a raw value into an Integer for encoding.
+  #
+  # @param value [Integer, String] the value being encoded.
+  # @return [Integer] the value converte to an Integer.
   def self.raw_value_to_number(value)
     case value
     when String
       q, r = value.bytesize.divmod(8)
       if r == 0
-        string_to_number_unrolled value, q
+        string_to_integer_unrolled value, q
       else
-        string_to_number value
+        string_to_integer value
       end
     when Integer
       value
@@ -105,7 +167,11 @@ module Crockford32
     end
   end
 
-  def self.string_to_number(s)
+  # Convert a String to an Integer one byte per iteration.
+  #
+  # @param s [String] the String to convert.
+  # @return [Integer] the String converted to an Integer in little-endian order.
+  def self.string_to_integer(s)
     shift = -0x08
     s.each_byte.reduce(0) do |n, b|
       shift += 0x08
@@ -113,7 +179,11 @@ module Crockford32
     end
   end
 
-  def self.string_to_number_unrolled(s, iterations)
+  # Convert a String to an Integer 8 bytes per iteration.
+  # @param s [String] the String to convert.
+  # @param iterations [Integer] the number of iterations to perform.
+  # @return [Integer] the String converted to an Integer in little-endian order.
+  def self.string_to_integer_unrolled(s, iterations)
     n = 0
     bytes = s.bytes
     while iterations > 0
@@ -132,6 +202,10 @@ module Crockford32
     n
   end
 
+  # Encode an Integer as a Base32 value.
+  #
+  # @see encode
+  # @return [String]
   def self.le_encode_number(number, length, check)
     result = +""
     n = number
@@ -153,5 +227,7 @@ module Crockford32
   end
 
   private_class_method [:le_decode_number, :convert, :into_string, :raw_value_to_number,
-    :string_to_number, :string_to_number_unrolled, :le_encode_number]
+    :string_to_integer, :string_to_integer_unrolled, :le_encode_number]
+
+  # @!endgroup
 end
