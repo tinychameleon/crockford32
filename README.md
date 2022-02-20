@@ -17,6 +17,17 @@ Or install it yourself as:
 
     $ gem install crockford32
 
+### Ruby Versions
+This gem is tested against the following Ruby versions:
+
+- 2.6.0
+- 2.6.9
+- 2.7.0
+- 2.7.5
+- 3.0.0
+- 3.0.3
+- 3.1.0
+
 
 ## Usage
 Encode data with the `encode` method:
@@ -101,6 +112,8 @@ For an interactive console with the gem loaded run `bin/console`.
 
 ## Testing
 Use the `bundle exec rake test` command to run unit tests. To install the gem onto your local machine for general integration testing use `bundle exec rake install`.
+
+To test the gem against each supported version of Ruby use `bin/test_versions`. This will create a Docker image for each version and run the tests and linting steps.
 
 
 ## Releases
