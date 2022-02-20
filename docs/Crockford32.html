@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: Crockford32
+  
+    &mdash; Documentation by YARD 0.9.27
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "Crockford32";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index (C)</a> &raquo;
+    
+    
+    <span class="title">Crockford32</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: Crockford32
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/crockford32.rb<span class="defines">,<br />
+  lib/crockford32/errors.rb,<br /> lib/crockford32/version.rb</span>
+</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>A fast little-endian implementation of <a href="https://www.crockford.com/base32.html" target="_parent" title="Douglas Crockford’s Base32 specification">Douglas Crockford’s Base32 specification</a>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Crockford32/ChecksumError.html" title="Crockford32::ChecksumError (class)">ChecksumError</a></span>, <span class='object_link'><a href="Crockford32/DecodeError.html" title="Crockford32::DecodeError (class)">DecodeError</a></span>, <span class='object_link'><a href="Crockford32/EncodeError.html" title="Crockford32::EncodeError (class)">EncodeError</a></span>, <span class='object_link'><a href="Crockford32/Error.html" title="Crockford32::Error (class)">Error</a></span>, <span class='object_link'><a href="Crockford32/InvalidCharacterError.html" title="Crockford32::InvalidCharacterError (class)">InvalidCharacterError</a></span>, <span class='object_link'><a href="Crockford32/LengthTooSmallError.html" title="Crockford32::LengthTooSmallError (class)">LengthTooSmallError</a></span>, <span class='object_link'><a href="Crockford32/UnsupportedDecodingTypeError.html" title="Crockford32::UnsupportedDecodingTypeError (class)">UnsupportedDecodingTypeError</a></span>, <span class='object_link'><a href="Crockford32/UnsupportedEncodingTypeError.html" title="Crockford32::UnsupportedEncodingTypeError (class)">UnsupportedEncodingTypeError</a></span>
+    
+  
+</p>
+
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="ENCODED_BITS-constant" class="">ENCODED_BITS =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The number of bits encoded per symbol.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>0x05</span></pre></dd>
+      
+        <dt id="CHECK_SYMBOL_MIN_VALUE-constant" class="">CHECK_SYMBOL_MIN_VALUE =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The minimum value of a check symbol.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>0x20</span></pre></dd>
+      
+        <dt id="CHECKSUM_PRIME-constant" class="">CHECKSUM_PRIME =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The prime number used to implement error detection.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>0x25</span></pre></dd>
+      
+        <dt id="DASH-constant" class="">DASH =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The ordinal value of an ASCII dash character.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_ord'>ord</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+        <dt id="DECODE_ORDINALS-constant" class="">DECODE_ORDINALS =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Symbol values in order by encoded ASCII ordinal values.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbracket'>[</span>
+  <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>
+  <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>
+  <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>
+   <span class='int'>34</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>  <span class='int'>32</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>
+    <span class='int'>0</span><span class='comma'>,</span>   <span class='int'>1</span><span class='comma'>,</span>   <span class='int'>2</span><span class='comma'>,</span>   <span class='int'>3</span><span class='comma'>,</span>   <span class='int'>4</span><span class='comma'>,</span>   <span class='int'>5</span><span class='comma'>,</span>   <span class='int'>6</span><span class='comma'>,</span>   <span class='int'>7</span><span class='comma'>,</span>   <span class='int'>8</span><span class='comma'>,</span>   <span class='int'>9</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>
+  <span class='kw'>nil</span><span class='comma'>,</span>  <span class='int'>35</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>  <span class='int'>10</span><span class='comma'>,</span>  <span class='int'>11</span><span class='comma'>,</span>  <span class='int'>12</span><span class='comma'>,</span>  <span class='int'>13</span><span class='comma'>,</span>  <span class='int'>14</span><span class='comma'>,</span>  <span class='int'>15</span><span class='comma'>,</span>  <span class='int'>16</span><span class='comma'>,</span>
+   <span class='int'>17</span><span class='comma'>,</span>   <span class='int'>1</span><span class='comma'>,</span>  <span class='int'>18</span><span class='comma'>,</span>  <span class='int'>19</span><span class='comma'>,</span>   <span class='int'>1</span><span class='comma'>,</span>  <span class='int'>20</span><span class='comma'>,</span>  <span class='int'>21</span><span class='comma'>,</span>   <span class='int'>0</span><span class='comma'>,</span>  <span class='int'>22</span><span class='comma'>,</span>  <span class='int'>23</span><span class='comma'>,</span>  <span class='int'>24</span><span class='comma'>,</span>  <span class='int'>25</span><span class='comma'>,</span>
+   <span class='int'>26</span><span class='comma'>,</span>  <span class='int'>36</span><span class='comma'>,</span>  <span class='int'>27</span><span class='comma'>,</span>  <span class='int'>28</span><span class='comma'>,</span>  <span class='int'>29</span><span class='comma'>,</span>  <span class='int'>30</span><span class='comma'>,</span>  <span class='int'>31</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>
+  <span class='kw'>nil</span><span class='comma'>,</span>  <span class='int'>10</span><span class='comma'>,</span>  <span class='int'>11</span><span class='comma'>,</span>  <span class='int'>12</span><span class='comma'>,</span>  <span class='int'>13</span><span class='comma'>,</span>  <span class='int'>14</span><span class='comma'>,</span>  <span class='int'>15</span><span class='comma'>,</span>  <span class='int'>16</span><span class='comma'>,</span>  <span class='int'>17</span><span class='comma'>,</span>   <span class='int'>1</span><span class='comma'>,</span>  <span class='int'>18</span><span class='comma'>,</span>  <span class='int'>19</span><span class='comma'>,</span>
+    <span class='int'>1</span><span class='comma'>,</span>  <span class='int'>20</span><span class='comma'>,</span>  <span class='int'>21</span><span class='comma'>,</span>   <span class='int'>0</span><span class='comma'>,</span>  <span class='int'>22</span><span class='comma'>,</span>  <span class='int'>23</span><span class='comma'>,</span>  <span class='int'>24</span><span class='comma'>,</span>  <span class='int'>25</span><span class='comma'>,</span>  <span class='int'>26</span><span class='comma'>,</span>  <span class='int'>36</span><span class='comma'>,</span>  <span class='int'>27</span><span class='comma'>,</span>  <span class='int'>28</span><span class='comma'>,</span>
+   <span class='int'>29</span><span class='comma'>,</span>  <span class='int'>30</span><span class='comma'>,</span>  <span class='int'>31</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span>  <span class='int'>33</span>
+<span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+        <dt id="ENCODE_SYMBOLS-constant" class="">ENCODE_SYMBOLS =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Encoding symbols ordered by bit value.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbracket'>[</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>2</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>3</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>4</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>5</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>6</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>7</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>8</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>9</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>A</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>B</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>C</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>D</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>E</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>F</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>G</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>H</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>J</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>K</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>M</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>N</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>P</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Q</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>R</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>S</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>T</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>V</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>W</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>X</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Y</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Z</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>*</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>~</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>$</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>=</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>U</span><span class='tstring_end'>&quot;</span></span>
+<span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+        <dt id="VERSION-constant" class="">VERSION =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The library version.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1.0.0</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Public Methods
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#decode-class_method" title="decode (class method)">.<strong>decode</strong>(value, into: :integer, check: false)  &#x21d2; Integer, String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Decode a Base32 value.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#encode-class_method" title="encode (class method)">.<strong>encode</strong>(value, length: nil, check: false)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Encode a value as Base32.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Private Methods
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#convert-class_method" title="convert (class method)">.<strong>convert</strong>(result, type)  &#x21d2; Integer, String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Convert a decoded result into the destination type.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#into_string-class_method" title="into_string (class method)">.<strong>into_string</strong>(result)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Convert an Integer into a String.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#le_decode_number-class_method" title="le_decode_number (class method)">.<strong>le_decode_number</strong>(encoded_value)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Decode a value with the expectation that it is in little-endian order.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#le_encode_number-class_method" title="le_encode_number (class method)">.<strong>le_encode_number</strong>(number, length, check)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Encode an Integer as a Base32 value.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#raw_value_to_number-class_method" title="raw_value_to_number (class method)">.<strong>raw_value_to_number</strong>(value)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Convert a raw value into an Integer for encoding.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#string_to_integer-class_method" title="string_to_integer (class method)">.<strong>string_to_integer</strong>(s)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Convert a String to an Integer one byte per iteration.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#string_to_integer_unrolled-class_method" title="string_to_integer_unrolled (class method)">.<strong>string_to_integer_unrolled</strong>(s, iterations)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Convert a String to an Integer 8 bytes per iteration.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="convert-class_method">
+  
+    .<strong>convert</strong>(result, type)  &#x21d2; <tt>Integer</tt>, <tt>String</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Convert a decoded result into the destination type.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>result</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the decoded value.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>type</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the destination type for the value. Can be <code>:integer</code> or <code>:string</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the decoded value converted to the destination type.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 122</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_convert'>convert</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_type'>type</span>
+  <span class='kw'>when</span> <span class='symbol'>:integer</span>
+    <span class='id identifier rubyid_result'>result</span>
+  <span class='kw'>when</span> <span class='symbol'>:string</span>
+    <span class='id identifier rubyid_into_string'>into_string</span> <span class='id identifier rubyid_result'>result</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="Crockford32/UnsupportedDecodingTypeError.html" title="Crockford32::UnsupportedDecodingTypeError (class)">UnsupportedDecodingTypeError</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Crockford32/UnsupportedDecodingTypeError.html#initialize-instance_method" title="Crockford32::UnsupportedDecodingTypeError#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="decode-class_method">
+  
+    .<strong>decode</strong>(value, into: :integer, check: false)  &#x21d2; <tt>Integer</tt>, <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Decode a Base32 value.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the Base32 value to decode.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>into</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>:integer</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the destination type to decode into. Can be <code>:integer</code> or <code>:string</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>check</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether to validate the check symbol.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the decoded value.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Crockford32/ChecksumError.html" title="Crockford32::ChecksumError (class)">ChecksumError</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when the check symbol does not match the decoded checksum.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Crockford32/InvalidCharacterError.html" title="Crockford32::InvalidCharacterError (class)">InvalidCharacterError</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when the value being decoded has a character outside the Base32 symbol set or a misplaced check symbol.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Crockford32/UnsupportedDecodingTypeError.html" title="Crockford32::UnsupportedDecodingTypeError (class)">UnsupportedDecodingTypeError</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when the requested <code>into:</code> type is not supported.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 64</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_decode'>decode</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='label'>into:</span> <span class='symbol'>:integer</span><span class='comma'>,</span> <span class='label'>check:</span> <span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_checksum'>checksum</span> <span class='op'>=</span> <span class='id identifier rubyid_check'>check</span> <span class='op'>?</span> <span class='id identifier rubyid_value'>value</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='kw'>nil</span>
+  <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_check'>check</span> <span class='op'>?</span> <span class='id identifier rubyid_value'>value</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>...</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_value'>value</span>
+
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='id identifier rubyid_le_decode_number'>le_decode_number</span> <span class='id identifier rubyid_value'>value</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_check'>check</span>
+    <span class='id identifier rubyid_actual'>actual</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span> <span class='op'>%</span> <span class='const'><span class='object_link'><a href="#CHECKSUM_PRIME-constant" title="Crockford32::CHECKSUM_PRIME (constant)">CHECKSUM_PRIME</a></span></span>
+    <span class='id identifier rubyid_required'>required</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#DECODE_ORDINALS-constant" title="Crockford32::DECODE_ORDINALS (constant)">DECODE_ORDINALS</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_checksum'>checksum</span><span class='period'>.</span><span class='id identifier rubyid_ord'>ord</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="Crockford32/ChecksumError.html" title="Crockford32::ChecksumError (class)">ChecksumError</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Crockford32/ChecksumError.html#initialize-instance_method" title="Crockford32::ChecksumError#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_actual'>actual</span><span class='comma'>,</span> <span class='id identifier rubyid_required'>required</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_actual'>actual</span> <span class='op'>!=</span> <span class='id identifier rubyid_required'>required</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_convert'>convert</span> <span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_into'>into</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="encode-class_method">
+  
+    .<strong>encode</strong>(value, length: nil, check: false)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Encode a value as Base32.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the value to encode.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>length</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the exact length of the Base32 string. Will be padded with “0” to meet length.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>check</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether to include a check symbol. This symbol is included in the length.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the encoded value.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Crockford32/LengthTooSmallError.html" title="Crockford32::LengthTooSmallError (class)">LengthTooSmallError</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when the requested <code>length:</code> is not large enough to fit the encoded result.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Crockford32/UnsupportedEncodingTypeError.html" title="Crockford32::UnsupportedEncodingTypeError (class)">UnsupportedEncodingTypeError</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when the value to encode is an unsupported type.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+91
+92
+93</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 91</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='label'>length:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>check:</span> <span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_le_encode_number'>le_encode_number</span><span class='lparen'>(</span><span class='id identifier rubyid_raw_value_to_number'>raw_value_to_number</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='comma'>,</span> <span class='id identifier rubyid_check'>check</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="into_string-class_method">
+  
+    .<strong>into_string</strong>(result)  &#x21d2; <tt>String</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Convert an Integer into a String.</p>
+
+<p>Each 8-bit sequence is packed into a String in little-endian order.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>result</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the decoded value.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the decoded value as a String.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 139</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_into_string'>into_string</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_q'>q</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_bit_length'>bit_length</span><span class='period'>.</span><span class='id identifier rubyid_divmod'>divmod</span><span class='lparen'>(</span><span class='int'>0x08</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_q'>q</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_bytes'>bytes</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_q'>q</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_q'>q</span><span class='period'>.</span><span class='id identifier rubyid_times'>times</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+    <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span> <span class='op'>&amp;</span> <span class='int'>0xff</span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>&gt;&gt;=</span> <span class='int'>0x08</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_bytes'>bytes</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>C*</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="le_decode_number-class_method">
+  
+    .<strong>le_decode_number</strong>(encoded_value)  &#x21d2; <tt>Integer</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Decode a value with the expectation that it is in little-endian order.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>encoded_value</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the value to decode.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the decoded value.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 104</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_le_decode_number'>le_decode_number</span><span class='lparen'>(</span><span class='id identifier rubyid_encoded_value'>encoded_value</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_symbol'>symbol</span> <span class='op'>=</span> <span class='op'>-</span><span class='int'>1</span>
+  <span class='id identifier rubyid_bits'>bits</span> <span class='op'>=</span> <span class='op'>-</span><span class='const'><span class='object_link'><a href="#ENCODED_BITS-constant" title="Crockford32::ENCODED_BITS (constant)">ENCODED_BITS</a></span></span>
+  <span class='id identifier rubyid_encoded_value'>encoded_value</span><span class='period'>.</span><span class='id identifier rubyid_bytes'>bytes</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_ch'>ch</span><span class='op'>|</span>
+    <span class='id identifier rubyid_symbol'>symbol</span> <span class='op'>+=</span> <span class='int'>1</span>
+    <span class='kw'>next</span> <span class='id identifier rubyid_result'>result</span> <span class='kw'>if</span> <span class='id identifier rubyid_ch'>ch</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="#DASH-constant" title="Crockford32::DASH (constant)">DASH</a></span></span>
+    <span class='id identifier rubyid_val'>val</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#DECODE_ORDINALS-constant" title="Crockford32::DECODE_ORDINALS (constant)">DECODE_ORDINALS</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_ch'>ch</span><span class='period'>.</span><span class='id identifier rubyid_ord'>ord</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="Crockford32/InvalidCharacterError.html" title="Crockford32::InvalidCharacterError (class)">InvalidCharacterError</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Crockford32/InvalidCharacterError.html#initialize-instance_method" title="Crockford32::InvalidCharacterError#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_encoded_value'>encoded_value</span><span class='comma'>,</span> <span class='id identifier rubyid_symbol'>symbol</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_val'>val</span> <span class='op'>&gt;=</span> <span class='const'><span class='object_link'><a href="#CHECK_SYMBOL_MIN_VALUE-constant" title="Crockford32::CHECK_SYMBOL_MIN_VALUE (constant)">CHECK_SYMBOL_MIN_VALUE</a></span></span>
+    <span class='id identifier rubyid_bits'>bits</span> <span class='op'>+=</span> <span class='const'><span class='object_link'><a href="#ENCODED_BITS-constant" title="Crockford32::ENCODED_BITS (constant)">ENCODED_BITS</a></span></span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>|</span> <span class='lparen'>(</span><span class='id identifier rubyid_val'>val</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_bits'>bits</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="le_encode_number-class_method">
+  
+    .<strong>le_encode_number</strong>(number, length, check)  &#x21d2; <tt>String</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Encode an Integer as a Base32 value.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="#encode-class_method" title="Crockford32.encode (method)">encode</a></span></li>
+    
+  </ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 209</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_le_encode_number'>le_encode_number</span><span class='lparen'>(</span><span class='id identifier rubyid_number'>number</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='comma'>,</span> <span class='id identifier rubyid_check'>check</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='op'>+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_n'>n</span> <span class='op'>=</span> <span class='id identifier rubyid_number'>number</span>
+  <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_chunk'>chunk</span> <span class='op'>=</span> <span class='id identifier rubyid_n'>n</span> <span class='op'>&amp;</span> <span class='int'>0x1F</span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='const'><span class='object_link'><a href="#ENCODE_SYMBOLS-constant" title="Crockford32::ENCODE_SYMBOLS (constant)">ENCODE_SYMBOLS</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_chunk'>chunk</span><span class='rbracket'>]</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>&gt;&gt;=</span> <span class='const'><span class='object_link'><a href="#ENCODED_BITS-constant" title="Crockford32::ENCODED_BITS (constant)">ENCODED_BITS</a></span></span>
+    <span class='kw'>break</span> <span class='kw'>if</span> <span class='id identifier rubyid_n'>n</span> <span class='op'>==</span> <span class='int'>0</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_rlen'>rlen</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='id identifier rubyid_check'>check</span> <span class='op'>?</span> <span class='int'>1</span> <span class='op'>:</span> <span class='int'>0</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_length'>length</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="Crockford32/LengthTooSmallError.html" title="Crockford32::LengthTooSmallError (class)">LengthTooSmallError</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Crockford32/LengthTooSmallError.html#initialize-instance_method" title="Crockford32::LengthTooSmallError#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_number'>number</span><span class='comma'>,</span> <span class='id identifier rubyid_rlen'>rlen</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_rlen'>rlen</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_length'>length</span>
+    <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0</span><span class='tstring_end'>&quot;</span></span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_length'>length</span> <span class='op'>-</span> <span class='id identifier rubyid_rlen'>rlen</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='const'><span class='object_link'><a href="#ENCODE_SYMBOLS-constant" title="Crockford32::ENCODE_SYMBOLS (constant)">ENCODE_SYMBOLS</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_number'>number</span> <span class='op'>%</span> <span class='const'><span class='object_link'><a href="#CHECKSUM_PRIME-constant" title="Crockford32::CHECKSUM_PRIME (constant)">CHECKSUM_PRIME</a></span></span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_check'>check</span>
+  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="raw_value_to_number-class_method">
+  
+    .<strong>raw_value_to_number</strong>(value)  &#x21d2; <tt>Integer</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Convert a raw value into an Integer for encoding.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the value being encoded.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the value converte to an Integer.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 154</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_raw_value_to_number'>raw_value_to_number</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_value'>value</span>
+  <span class='kw'>when</span> <span class='const'>String</span>
+    <span class='id identifier rubyid_q'>q</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_bytesize'>bytesize</span><span class='period'>.</span><span class='id identifier rubyid_divmod'>divmod</span><span class='lparen'>(</span><span class='int'>8</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span> <span class='op'>==</span> <span class='int'>0</span>
+      <span class='id identifier rubyid_string_to_integer_unrolled'>string_to_integer_unrolled</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_q'>q</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_string_to_integer'>string_to_integer</span> <span class='id identifier rubyid_value'>value</span>
+    <span class='kw'>end</span>
+  <span class='kw'>when</span> <span class='const'>Integer</span>
+    <span class='id identifier rubyid_value'>value</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="Crockford32/UnsupportedEncodingTypeError.html" title="Crockford32::UnsupportedEncodingTypeError (class)">UnsupportedEncodingTypeError</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Crockford32/UnsupportedEncodingTypeError.html#initialize-instance_method" title="Crockford32::UnsupportedEncodingTypeError#initialize (method)">new</a></span></span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="string_to_integer-class_method">
+  
+    .<strong>string_to_integer</strong>(s)  &#x21d2; <tt>Integer</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Convert a String to an Integer one byte per iteration.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>s</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the String to convert.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the String converted to an Integer in little-endian order.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+174
+175
+176
+177
+178
+179
+180</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 174</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_string_to_integer'>string_to_integer</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_shift'>shift</span> <span class='op'>=</span> <span class='op'>-</span><span class='int'>0x08</span>
+  <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_each_byte'>each_byte</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_n'>n</span><span class='comma'>,</span> <span class='id identifier rubyid_b'>b</span><span class='op'>|</span>
+    <span class='id identifier rubyid_shift'>shift</span> <span class='op'>+=</span> <span class='int'>0x08</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='id identifier rubyid_b'>b</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_shift'>shift</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="string_to_integer_unrolled-class_method">
+  
+    .<strong>string_to_integer_unrolled</strong>(s, iterations)  &#x21d2; <tt>Integer</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Convert a String to an Integer 8 bytes per iteration.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>s</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the String to convert.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>iterations</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the number of iterations to perform.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the String converted to an Integer in little-endian order.</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Since:</p>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'>
+<p>1.0.0</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 186</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_string_to_integer_unrolled'>string_to_integer_unrolled</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='comma'>,</span> <span class='id identifier rubyid_iterations'>iterations</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_n'>n</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_bytes'>bytes</span> <span class='op'>=</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_bytes'>bytes</span>
+  <span class='kw'>while</span> <span class='id identifier rubyid_iterations'>iterations</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_o'>o</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_iterations'>iterations</span> <span class='op'>-</span> <span class='int'>1</span><span class='rparen'>)</span> <span class='op'>*</span> <span class='int'>0x40</span>
+    <span class='id identifier rubyid_i'>i</span> <span class='op'>=</span> <span class='id identifier rubyid_iterations'>iterations</span> <span class='op'>*</span> <span class='int'>0x08</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span> <span class='op'>+</span> <span class='int'>0x38</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>2</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span> <span class='op'>+</span> <span class='int'>0x30</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>3</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span> <span class='op'>+</span> <span class='int'>0x28</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>4</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span> <span class='op'>+</span> <span class='int'>0x20</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>5</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span> <span class='op'>+</span> <span class='int'>0x18</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>6</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span> <span class='op'>+</span> <span class='int'>0x10</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>7</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span> <span class='op'>+</span> <span class='int'>0x08</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_n'>n</span> <span class='op'>+=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span> <span class='op'>-</span> <span class='int'>8</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='lparen'>(</span><span class='id identifier rubyid_o'>o</span> <span class='op'>+</span> <span class='int'>0x00</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_iterations'>iterations</span> <span class='op'>-=</span> <span class='int'>1</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_n'>n</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Sat Feb 19 17:49:29 2022 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.27 (ruby-3.1.0).
+</div>
+
+    </div>
+  </body>
+</html>

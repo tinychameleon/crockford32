@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.27
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-Crockford32">Crockford32</h1>
+
+<p>A fast little-endian implementation of <a href="https://www.crockford.com/base32.html">Douglas Crockford’s Base32 specification</a>.</p>
+
+<h2 id="label-Installation">Installation</h2>
+
+<p>Add this line to your application’s Gemfile:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>crockford32</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre class="code ruby"><code class="ruby">$ bundle install
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre class="code ruby"><code class="ruby">$ gem install crockford32
+</code></pre>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>Encode data with the <code>encode</code> method:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_encoded'>encoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_encode'><span class='object_link'><a href="Crockford32.html#encode-class_method" title="Crockford32.encode (method)">encode</a></span></span><span class='lparen'>(</span><span class='int'>1234</span><span class='rparen'>)</span> <span class='comment'># encoded = &quot;J61&quot;
+</span></code></pre>
+
+<p>Decode a value with the <code>decode</code> method:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_decoded'>decoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_decode'><span class='object_link'><a href="Crockford32.html#decode-class_method" title="Crockford32.decode (method)">decode</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>J61</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># decoded = 1234
+</span></code></pre>
+
+<h3 id="label-Strings">Strings</h3>
+
+<p>You can also encode and decode strings by providing the <code>:string</code> value as the <code>into:</code> argument to <code>decode</code>. Encoding a string requires no special consideration.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_encoded'>encoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_encode'><span class='object_link'><a href="Crockford32.html#encode-class_method" title="Crockford32.encode (method)">encode</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>abc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># encoded = &quot;1KR66&quot;
+</span><span class='id identifier rubyid_decoded'>decoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_decode'><span class='object_link'><a href="Crockford32.html#decode-class_method" title="Crockford32.decode (method)">decode</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_encoded'>encoded</span><span class='comma'>,</span> <span class='label'>into:</span> <span class='symbol'>:string</span><span class='rparen'>)</span> <span class='comment'># decoded = &quot;abc&quot;
+</span></code></pre>
+
+<p>When decoding you may receive a byte string if the encoded value is not alphanumeric:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_decoded'>decoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_decode'><span class='object_link'><a href="Crockford32.html#decode-class_method" title="Crockford32.decode (method)">decode</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>J61</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>into:</span> <span class='symbol'>:string</span><span class='rparen'>)</span> <span class='comment'># decoded = &quot;\xD2\x04&quot;
+</span></code></pre>
+
+<h3 id="label-Padding+to+a+Length">Padding to a Length</h3>
+
+<p>You can ensure your encoded values are a specific length by specifying a <code>length:</code> on <code>encode</code>:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_encoded'>encoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_encode'><span class='object_link'><a href="Crockford32.html#encode-class_method" title="Crockford32.encode (method)">encode</a></span></span><span class='lparen'>(</span><span class='int'>1234</span><span class='comma'>,</span> <span class='label'>length:</span> <span class='int'>5</span><span class='rparen'>)</span> <span class='comment'># encoded = &quot;J6100&quot;
+</span></code></pre>
+
+<p>The padding is always “0” values and is always appended to the end of the encoded string. Whatever you specify as the <code>length:</code> will be the length of the encoded string you receive.</p>
+
+<h3 id="label-Check+Symbols">Check Symbols</h3>
+
+<p>If you wish to append a check symbol for simple modulus-based error detection both <code>encode</code> and <code>decode</code> support it with the <code>check:</code> keyword.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_encoded'>encoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_encode'><span class='object_link'><a href="Crockford32.html#encode-class_method" title="Crockford32.encode (method)">encode</a></span></span><span class='lparen'>(</span><span class='int'>1234</span><span class='comma'>,</span> <span class='label'>check:</span> <span class='kw'>true</span><span class='rparen'>)</span> <span class='comment'># encoded = &quot;J61D&quot;. &quot;D&quot; is the checksum symbol.
+</span><span class='id identifier rubyid_decoded'>decoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_decode'><span class='object_link'><a href="Crockford32.html#decode-class_method" title="Crockford32.decode (method)">decode</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_encoded'>encoded</span><span class='comma'>,</span> <span class='label'>check:</span> <span class='kw'>true</span><span class='rparen'>)</span> <span class='comment'># decoded = 1234. Checksum is tested.
+</span></code></pre>
+
+<p>An error will be raised if the decoding process does not pass the checksum:</p>
+
+<pre class="code ruby"><code class="ruby">decoded = Crockford32.decode(&quot;J71D&quot;, check: true) # Notice the 6 changed to a 7.
+~/.../crockford32/lib/crockford32.rb:43:in `decode&#39;: Value J71 has checksum 8 but requires 13 (Crockford32::ChecksumError)
+	from (irb):2:in `&lt;main&gt;&#39;
+	from bin/console:8:in `&lt;main&gt;&#39;
+</code></pre>
+
+<p>If you specify a <code>length:</code> and <code>check: true</code> when encoding, the checksum will be included as part of the <code>length:</code>.</p>
+
+<h3 id="label-Encoding+Type+Support">Encoding Type Support</h3>
+
+<p>This library currently supports encoding <code>Integer</code> and <code>String</code> values.</p>
+
+<h3 id="label-Little-Endian+Encoding">Little-Endian Encoding</h3>
+
+<p>The encoding example above shows the little-endian results of encoding a number. Some libraries encode using big-endian and will return <code>&quot;16J&quot;</code> when the number <code>1234</code> is encoded.</p>
+
+<p>This library <em>always</em> uses little-endian.</p>
+
+<h2 id="label-Error+Handling">Error Handling</h2>
+
+<p>The following errors are raised during certain operations. All errors derive from <code>StandardError</code>.</p>
+
+<h3 id="label-Crockford32-3A-3AError"><code>Crockford32::Error</code></h3>
+
+<p>This is the base error for all other errors in the library. Use it to catch everything.</p>
+
+<h3 id="label-Crockford32-3A-3AEncodeError"><code>Crockford32::EncodeError</code></h3>
+
+<p>This is the base error for all encoding errors that can be raised by <code>Crockford32.encode</code>.</p>
+
+<h3 id="label-Crockford32-3A-3ADecodeError"><code>Crockford32::DecodeError</code></h3>
+
+<p>This is the base error for all decoding errors that can be raised by <code>Crockford32.decode</code>.</p>
+
+<h3 id="label-Crockford32-3A-3ALengthTooSmallError"><code>Crockford32::LengthTooSmallError</code></h3>
+
+<p>This is an <code>EncodeError</code> which is raised when the encoded value would be larger than the provided <code>length:</code> value.</p>
+
+<h3 id="label-Crockford32-3A-3AUnsupportedEncodingTypeError"><code>Crockford32::UnsupportedEncodingTypeError</code></h3>
+
+<p>This is an <code>EncodeError</code> which is raised when the type of value to encode is not supported by the library.</p>
+
+<h3 id="label-Crockford32-3A-3AInvalidCharacterError"><code>Crockford32::InvalidCharacterError</code></h3>
+
+<p>This is a <code>DecodeError</code> which is raised when an illegal symbol is found. An illegal symbol is any character not in the specification or a check symbol which is not at the end of the value.</p>
+
+<h3 id="label-Crockford32-3A-3AUnsupportedDecodingTypeError"><code>Crockford32::UnsupportedDecodingTypeError</code></h3>
+
+<p>This is a <code>DecodeError</code> which is raised when an unknown value is provided to <code>into:</code>.</p>
+
+<h3 id="label-Crockford32-3A-3AChecksumError"><code>Crockford32::ChecksumError</code></h3>
+
+<p>This is a <code>DecodeError</code> which is raised when the checksum test fails.</p>
+
+<h2 id="label-Development">Development</h2>
+
+<p>To get started development on this gem run the <code>bin/setup</code> command. This will install dependencies and run the tests and linting tasks to ensure everything is working.</p>
+
+<p>For an interactive console with the gem loaded run <code>bin/console</code>.</p>
+
+<h2 id="label-Testing">Testing</h2>
+
+<p>Use the <code>bundle exec rake test</code> command to run unit tests. To install the gem onto your local machine for general integration testing use <code>bundle exec rake install</code>.</p>
+
+<h2 id="label-Releases">Releases</h2>
+
+<p>Do the following to release a new version of this gem:</p>
+<ul><li>
+<p>Update the version number in <a href="./lib/crockford32/version_rb.html">lib/crockford32/version.rb</a></p>
+</li><li>
+<p>Ensure necessary documentation changes are complete</p>
+</li><li>
+<p>Ensure changes are in the <a href="./CHANGELOG_md.html">CHANGELOG.md</a></p>
+</li><li>
+<p>Create the new release using <code>bundle exec rake release</code></p>
+</li></ul>
+
+<p>After this is done the following side-effects should be visible:</p>
+<ul><li>
+<p>A new git tag for the version number should exist</p>
+</li><li>
+<p>Commits for the new version should be pushed to GitHub</p>
+</li><li>
+<p>The new gem should be available on <a href="https://rubygems.org">rubygems.org</a>.</p>
+</li></ul>
+
+<p>Finally, update the documentation hosted on GitHub Pages:</p>
+<ul><li>
+<p>Check-out the <code>gh-pages</code> branch</p>
+</li><li>
+<p>Merge <code>main</code> into the <code>gh-pages</code> branch</p>
+</li><li>
+<p>Generate the documentation with <code>bundle exec rake yard</code></p>
+</li><li>
+<p>Commit the documentation on the <code>gh-pages</code> branch</p>
+</li><li>
+<p>Push the new documentation so GitHub Pages can deploy it</p>
+</li></ul>
+
+<h2 id="label-Benchmarks">Benchmarks</h2>
+
+<p>Benchmarking is tricky and the goal of a benchmark should be clear before attempting performance improvements. The goal of this library for performance is as follows:</p>
+
+<blockquote>
+<p>This library should be capable of encoding and decoding IDs at a rate which does not make it a bottleneck for the majority of web APIs.</p>
+</blockquote>
+
+<p>Given the above goal statement, these benchmarks run on the following environment:</p>
+
+<table role="table">
+<thead>
+<tr>
+<th align="left">Attribute</th>
+<th align="right">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Ruby Version</td>
+<td align="right">3.1.0</td>
+</tr>
+<tr>
+<td align="left">MacOS Version</td>
+<td align="right">Catalina 10.15.7 (19H1615)</td>
+</tr>
+<tr>
+<td align="left">MacOS Model Identifier</td>
+<td align="right">MacBookPro10,1</td>
+</tr>
+<tr>
+<td align="left">MacOS Processor Name</td>
+<td align="right">Quad-Core Intel Core i7</td>
+</tr>
+<tr>
+<td align="left">MacOS Processor Speed</td>
+<td align="right">2.7 GHz</td>
+</tr>
+<tr>
+<td align="left">MacOS Number of Processors</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td align="left">MacOS Total Number of Cores</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td align="left">MacOS L2 Cache (per Core)</td>
+<td align="right">256 KB</td>
+</tr>
+<tr>
+<td align="left">MacOS L3 Cache</td>
+<td align="right">6 MB</td>
+</tr>
+<tr>
+<td align="left">MacOS Hyper-Threading Technology</td>
+<td align="right">Enabled</td>
+</tr>
+<tr>
+<td align="left">MacOS Memory</td>
+<td align="right">16 GB</td>
+</tr>
+</tbody>
+</table>
+
+<p>When run using a constant 16 bytes of data in the above environment the performance is approximately as follows:</p>
+
+<pre class="code ruby"><code class="ruby">~/…/crockford32› date &amp;&amp; ruby test/benchmarks/current.rb
+Fri Feb 18 15:35:49 PST 2022
+Warming up --------------------------------------
+              encode    11.498k i/100ms
+              decode    10.550k i/100ms
+       encode string     7.686k i/100ms
+       decode string     6.798k i/100ms
+Calculating -------------------------------------
+              encode    117.614k (± 3.5%) i/s -    597.896k in   5.090119s
+              decode    108.253k (± 3.2%) i/s -    548.600k in   5.073326s
+       encode string     78.690k (± 3.1%) i/s -    399.672k in   5.084255s
+       decode string     69.707k (± 3.5%) i/s -    353.496k in   5.077700s
+</code></pre>
+
+<p>Being conservative in estimation 30k i/s round trip decoding and encoding cycles should be possible. This achieves the performance goal.</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Sat Feb 19 17:49:29 2022 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.27 (ruby-3.1.0).
+</div>
+
+    </div>
+  </body>
+</html>
