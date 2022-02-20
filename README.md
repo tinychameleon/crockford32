@@ -127,8 +127,9 @@ Use the `bundle exec rake test` command to run unit tests. To install the gem on
 Do the following to release a new version of this gem:
 
 - Update the version number in [lib/crockford32/version.rb](./lib/crockford32/version.rb)
-- Double-check that necessary documentation changes are complete
-- Generate the updated documentation with `bundle exec rake rdoc`
+- Ensure necessary documentation changes are complete
+- Ensure changes are in the [CHANGELOG.md](./CHANGELOG.md)
+- Generate the updated documentation with `bundle exec rake yard`
 - Create the new release using `bundle exec rake release`
 
 After this is done the following side-effects should be visible:
