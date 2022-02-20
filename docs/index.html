@@ -79,6 +79,25 @@
 <pre class="code ruby"><code class="ruby">$ gem install crockford32
 </code></pre>
 
+<h3 id="label-Ruby+Versions">Ruby Versions</h3>
+
+<p>This gem is tested against the following Ruby versions:</p>
+<ul><li>
+<p>2.6.0</p>
+</li><li>
+<p>2.6.9</p>
+</li><li>
+<p>2.7.0</p>
+</li><li>
+<p>2.7.5</p>
+</li><li>
+<p>3.0.0</p>
+</li><li>
+<p>3.0.3</p>
+</li><li>
+<p>3.1.0</p>
+</li></ul>
+
 <h2 id="label-Usage">Usage</h2>
 
 <p>Encode data with the <code>encode</code> method:</p>
@@ -86,10 +105,15 @@
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_encoded'>encoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_encode'><span class='object_link'><a href="Crockford32.html#encode-class_method" title="Crockford32.encode (method)">encode</a></span></span><span class='lparen'>(</span><span class='int'>1234</span><span class='rparen'>)</span> <span class='comment'># encoded = &quot;J61&quot;
 </span></code></pre>
 
+<p>See the <a href="https://tinychameleon.github.io/crockford32/Crockford32.html#encode-class_method">the encode API documentation for error details</a>.</p>
+<hr>
+
 <p>Decode a value with the <code>decode</code> method:</p>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_decoded'>decoded</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Crockford32.html" title="Crockford32 (module)">Crockford32</a></span></span><span class='period'>.</span><span class='id identifier rubyid_decode'><span class='object_link'><a href="Crockford32.html#decode-class_method" title="Crockford32.decode (method)">decode</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>J61</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># decoded = 1234
 </span></code></pre>
+
+<p>See the <a href="https://tinychameleon.github.io/crockford32/Crockford32.html#decode-class_method">the decode API documentation for error details</a>.</p>
 
 <h3 id="label-Strings">Strings</h3>
 
@@ -141,41 +165,9 @@
 
 <p>This library <em>always</em> uses little-endian.</p>
 
-<h2 id="label-Error+Handling">Error Handling</h2>
+<h3 id="label-More+Information">More Information</h3>
 
-<p>The following errors are raised during certain operations. All errors derive from <code>StandardError</code>.</p>
-
-<h3 id="label-Crockford32-3A-3AError"><code>Crockford32::Error</code></h3>
-
-<p>This is the base error for all other errors in the library. Use it to catch everything.</p>
-
-<h3 id="label-Crockford32-3A-3AEncodeError"><code>Crockford32::EncodeError</code></h3>
-
-<p>This is the base error for all encoding errors that can be raised by <code>Crockford32.encode</code>.</p>
-
-<h3 id="label-Crockford32-3A-3ADecodeError"><code>Crockford32::DecodeError</code></h3>
-
-<p>This is the base error for all decoding errors that can be raised by <code>Crockford32.decode</code>.</p>
-
-<h3 id="label-Crockford32-3A-3ALengthTooSmallError"><code>Crockford32::LengthTooSmallError</code></h3>
-
-<p>This is an <code>EncodeError</code> which is raised when the encoded value would be larger than the provided <code>length:</code> value.</p>
-
-<h3 id="label-Crockford32-3A-3AUnsupportedEncodingTypeError"><code>Crockford32::UnsupportedEncodingTypeError</code></h3>
-
-<p>This is an <code>EncodeError</code> which is raised when the type of value to encode is not supported by the library.</p>
-
-<h3 id="label-Crockford32-3A-3AInvalidCharacterError"><code>Crockford32::InvalidCharacterError</code></h3>
-
-<p>This is a <code>DecodeError</code> which is raised when an illegal symbol is found. An illegal symbol is any character not in the specification or a check symbol which is not at the end of the value.</p>
-
-<h3 id="label-Crockford32-3A-3AUnsupportedDecodingTypeError"><code>Crockford32::UnsupportedDecodingTypeError</code></h3>
-
-<p>This is a <code>DecodeError</code> which is raised when an unknown value is provided to <code>into:</code>.</p>
-
-<h3 id="label-Crockford32-3A-3AChecksumError"><code>Crockford32::ChecksumError</code></h3>
-
-<p>This is a <code>DecodeError</code> which is raised when the checksum test fails.</p>
+<p>For more detailed information about the library <a href="https://tinychameleon.github.io/crockford32/">see the API documentation</a>.</p>
 
 <h2 id="label-Development">Development</h2>
 
@@ -186,6 +178,8 @@
 <h2 id="label-Testing">Testing</h2>
 
 <p>Use the <code>bundle exec rake test</code> command to run unit tests. To install the gem onto your local machine for general integration testing use <code>bundle exec rake install</code>.</p>
+
+<p>To test the gem against each supported version of Ruby use <code>bin/test_versions</code>. This will create a Docker image for each version and run the tests and linting steps.</p>
 
 <h2 id="label-Releases">Releases</h2>
 
@@ -307,7 +301,7 @@ Calculating -------------------------------------
 </div></div>
 
       <div id="footer">
-  Generated on Sat Feb 19 17:49:28 2022 by
+  Generated on Sat Feb 19 21:45:05 2022 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-3.1.0).
 </div>
