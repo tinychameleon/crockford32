@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    crockford32 (1.0.0)
+    crockford32 (1.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -48,7 +48,9 @@ GEM
       webrick (~> 1.7.0)
 
 PLATFORMS
+  ruby
   x86_64-darwin-19
+  x86_64-linux
 
 DEPENDENCIES
   benchmark-ips (~> 2.10)

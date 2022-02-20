@@ -226,8 +226,8 @@ module Crockford32
     result.freeze
   end
 
-  private_class_method [:le_decode_number, :convert, :into_string, :raw_value_to_number,
-    :string_to_integer, :string_to_integer_unrolled, :le_encode_number]
+  private_class_method :le_decode_number, :convert, :into_string, :raw_value_to_number,
+    :string_to_integer, :string_to_integer_unrolled, :le_encode_number
 
   # @!endgroup
 end

@@ -17,6 +17,17 @@ Or install it yourself as:
 
     $ gem install crockford32
 
+### Ruby Versions
+This gem is tested against the following Ruby versions:
+
+- 2.6.0
+- 2.6.9
+- 2.7.0
+- 2.7.5
+- 3.0.0
+- 3.0.3
+- 3.1.0
+
 
 ## Usage
 Encode data with the `encode` method:
@@ -24,12 +35,17 @@ Encode data with the `encode` method:
 ```ruby
 encoded = Crockford32.encode(1234) # encoded = "J61"
 ```
+See the [the encode API documentation for error details](https://tinychameleon.github.io/crockford32/Crockford32.html#encode-class_method).
+
+---
 
 Decode a value with the `decode` method:
 
 ```ruby
 decoded = Crockford32.decode("J61") # decoded = 1234
 ```
+See the [the decode API documentation for error details](https://tinychameleon.github.io/crockford32/Crockford32.html#decode-class_method).
+
 
 ### Strings
 You can also encode and decode strings by providing the `:string` value as the `into:` argument to `decode`.
@@ -84,33 +100,8 @@ Some libraries encode using big-endian and will return `"16J"` when the number `
 
 This library _always_ uses little-endian.
 
-
-## Error Handling
-The following errors are raised during certain operations. All errors derive from `StandardError`.
-
-### `Crockford32::Error`
-This is the base error for all other errors in the library. Use it to catch everything.
-
-### `Crockford32::EncodeError`
-This is the base error for all encoding errors that can be raised by `Crockford32.encode`.
-
-### `Crockford32::DecodeError`
-This is the base error for all decoding errors that can be raised by `Crockford32.decode`.
-
-### `Crockford32::LengthTooSmallError`
-This is an `EncodeError` which is raised when the encoded value would be larger than the provided `length:` value.
-
-### `Crockford32::UnsupportedEncodingTypeError`
-This is an `EncodeError` which is raised when the type of value to encode is not supported by the library.
-
-### `Crockford32::InvalidCharacterError`
-This is a `DecodeError` which is raised when an illegal symbol is found. An illegal symbol is any character not in the specification or a check symbol which is not at the end of the value.
-
-### `Crockford32::UnsupportedDecodingTypeError`
-This is a `DecodeError` which is raised when an unknown value is provided to `into:`.
-
-### `Crockford32::ChecksumError`
-This is a `DecodeError` which is raised when the checksum test fails.
+### More Information
+For more detailed information about the library [see the API documentation](https://tinychameleon.github.io/crockford32/).
 
 
 ## Development
@@ -121,6 +112,8 @@ For an interactive console with the gem loaded run `bin/console`.
 
 ## Testing
 Use the `bundle exec rake test` command to run unit tests. To install the gem onto your local machine for general integration testing use `bundle exec rake install`.
+
+To test the gem against each supported version of Ruby use `bin/test_versions`. This will create a Docker image for each version and run the tests and linting steps.
 
 
 ## Releases
