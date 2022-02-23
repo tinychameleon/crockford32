@@ -1,0 +1,9 @@
+module Crockford32
+  VERSION: String
+
+  type encodable = Integer | String
+  type decode_into = :integer | :string
+
+  def self.decode: (String, ?into: decode_into, ?check: bool) -> encodable
+  def self.encode: (encodable, ?length: Integer, ?check: bool) -> String
+end

@@ -1,6 +1,7 @@
 # Crockford32
 A fast little-endian implementation of [Douglas Crockford's Base32 specification](https://www.crockford.com/base32.html).
 
+[![Gem Version](https://badge.fury.io/rb/crockford32.svg)](https://badge.fury.io/rb/crockford32)
 
 ## Installation
 Add this line to your application's Gemfile:

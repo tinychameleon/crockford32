@@ -22,3 +22,8 @@ desc "Benchmark the current implementation"
 task benchmark: [] do |t|
   sh "date; ruby test/benchmarks/current.rb"
 end
+
+desc "Type check the current implementation"
+task :rbs do |t|
+  sh "bundle exec rbs test --target 'Crockford32::*' bundle exec rake test"
+end
