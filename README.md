@@ -3,6 +3,20 @@ A fast little-endian implementation of [Douglas Crockford's Base32 specification
 
 [![Gem Version](https://badge.fury.io/rb/crockford32.svg)](https://badge.fury.io/rb/crockford32)
 
+## What's in the box?
+✅ Simple usage documentation written to get started fast. [Check it out!](#usage)
+
+⚡ A pretty fast implementation of Crockford32 in pure ruby. [Check it out!](#benchmarks)
+
+📚 YARD generated API documentation for the library. [Check it out!](https://tinychameleon.github.io/crockford32/)
+
+🤖 RBS types for your type checking wants. [Check it out!](./sig/crockford32.rbs)
+
+💎 Tests against many Ruby versions. [Check it out!](#ruby-versions)
+
+🔒 MFA protection on all gem owners. [Check it out!](https://rubygems.org/gems/crockford32)
+
+
 ## Installation
 Add this line to your application's Gemfile:
 
@@ -28,6 +42,7 @@ This gem is tested against the following Ruby versions:
 - 3.0.0
 - 3.0.3
 - 3.1.0
+- 3.1.1
 
 
 ## Usage
@@ -105,19 +120,21 @@ This library _always_ uses little-endian.
 For more detailed information about the library [see the API documentation](https://tinychameleon.github.io/crockford32/).
 
 
-## Development
+## Contributing
+
+### Development
 To get started development on this gem run the `bin/setup` command. This will install dependencies and run the tests and linting tasks to ensure everything is working.
 
 For an interactive console with the gem loaded run `bin/console`.
 
 
-## Testing
+### Testing
 Use the `bundle exec rake test` command to run unit tests. To install the gem onto your local machine for general integration testing use `bundle exec rake install`.
 
 To test the gem against each supported version of Ruby use `bin/test_versions`. This will create a Docker image for each version and run the tests and linting steps.
 
 
-## Releases
+### Releasing
 Do the following to release a new version of this gem:
 
 - Update the version number in [lib/crockford32/version.rb](./lib/crockford32/version.rb)
