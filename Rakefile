@@ -25,5 +25,5 @@ end
 
 desc "Type check the current implementation"
 task :rbs do |t|
-  sh "bundle exec rbs test --target 'Crockford32::*' bundle exec rake test"
+  sh "bundle exec rbs -I sig test --target 'Crockford32::*' bundle exec rake test"
 end
