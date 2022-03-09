@@ -369,7 +369,7 @@
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1.0.2</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1.1.0</span><span class='tstring_end'>&quot;</span></span></pre></dd>
       
     </dl>
   
@@ -391,7 +391,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#decode-class_method" title="decode (class method)">.<strong>decode</strong>(value, into: :integer, check: false)  &#x21d2; Integer, String </a>
+      <a href="#decode-class_method" title="decode (class method)">.<strong>decode</strong>(value, into: :integer, check: false, length: nil)  &#x21d2; Integer, String </a>
     
 
     
@@ -448,7 +448,7 @@
         <li class="private ">
   <span class="summary_signature">
     
-      <a href="#convert-class_method" title="convert (class method)">.<strong>convert</strong>(result, type)  &#x21d2; Integer, String </a>
+      <a href="#convert-class_method" title="convert (class method)">.<strong>convert</strong>(result, type, length)  &#x21d2; Integer, String </a>
     
 
     
@@ -472,7 +472,7 @@
         <li class="private ">
   <span class="summary_signature">
     
-      <a href="#into_string-class_method" title="into_string (class method)">.<strong>into_string</strong>(result)  &#x21d2; String </a>
+      <a href="#into_string-class_method" title="into_string (class method)">.<strong>into_string</strong>(result, length)  &#x21d2; String </a>
     
 
     
@@ -625,7 +625,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="convert-class_method">
   
-    .<strong>convert</strong>(result, type)  &#x21d2; <tt>Integer</tt>, <tt>String</tt>  <span class="extras">(private)</span>
+    .<strong>convert</strong>(result, type, length)  &#x21d2; <tt>Integer</tt>, <tt>String</tt>  <span class="extras">(private)</span>
   
 
   
@@ -675,6 +675,22 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>length</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the length to pad the string to.</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -718,8 +734,6 @@
       <pre class="lines">
 
 
-122
-123
 124
 125
 126
@@ -727,17 +741,19 @@
 128
 129
 130
-131</pre>
+131
+132
+133</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 124</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_convert'>convert</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_convert'>convert</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_type'>type</span>
   <span class='kw'>when</span> <span class='symbol'>:integer</span>
     <span class='id identifier rubyid_result'>result</span>
   <span class='kw'>when</span> <span class='symbol'>:string</span>
-    <span class='id identifier rubyid_into_string'>into_string</span> <span class='id identifier rubyid_result'>result</span>
+    <span class='id identifier rubyid_into_string'>into_string</span> <span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span>
   <span class='kw'>else</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="Crockford32/UnsupportedDecodingTypeError.html" title="Crockford32::UnsupportedDecodingTypeError (class)">UnsupportedDecodingTypeError</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Crockford32/UnsupportedDecodingTypeError.html#initialize-instance_method" title="Crockford32::UnsupportedDecodingTypeError#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -750,7 +766,7 @@
       <div class="method_details ">
   <h3 class="signature " id="decode-class_method">
   
-    .<strong>decode</strong>(value, into: :integer, check: false)  &#x21d2; <tt>Integer</tt>, <tt>String</tt> 
+    .<strong>decode</strong>(value, into: :integer, check: false, length: nil)  &#x21d2; <tt>Integer</tt>, <tt>String</tt> 
   
 
   
@@ -816,6 +832,24 @@
         &mdash;
         <div class='inline'>
 <p>whether to validate the check symbol.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>length</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the length of the resulting string when right padded.</p>
 </div>
       
     </li>
@@ -909,7 +943,6 @@
       <pre class="lines">
 
 
-64
 65
 66
 67
@@ -922,12 +955,13 @@
 74
 75
 76
-77</pre>
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 65</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_decode'>decode</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='label'>into:</span> <span class='symbol'>:integer</span><span class='comma'>,</span> <span class='label'>check:</span> <span class='kw'>false</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_decode'>decode</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='label'>into:</span> <span class='symbol'>:integer</span><span class='comma'>,</span> <span class='label'>check:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>length:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_checksum'>checksum</span> <span class='op'>=</span> <span class='id identifier rubyid_check'>check</span> <span class='op'>?</span> <span class='id identifier rubyid_value'>value</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_check'>check</span> <span class='op'>?</span> <span class='id identifier rubyid_value'>value</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>...</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_value'>value</span>
 
@@ -939,7 +973,7 @@
     <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="Crockford32/ChecksumError.html" title="Crockford32::ChecksumError (class)">ChecksumError</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Crockford32/ChecksumError.html#initialize-instance_method" title="Crockford32::ChecksumError#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_actual'>actual</span><span class='comma'>,</span> <span class='id identifier rubyid_required'>required</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_actual'>actual</span> <span class='op'>!=</span> <span class='id identifier rubyid_required'>required</span>
   <span class='kw'>end</span>
 
-  <span class='id identifier rubyid_convert'>convert</span> <span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_into'>into</span>
+  <span class='id identifier rubyid_convert'>convert</span> <span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_into'>into</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1094,12 +1128,12 @@
       <pre class="lines">
 
 
-91
 92
-93</pre>
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_encode'>encode</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='label'>length:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>check:</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_le_encode_number'>le_encode_number</span><span class='lparen'>(</span><span class='id identifier rubyid_raw_value_to_number'>raw_value_to_number</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='comma'>,</span> <span class='id identifier rubyid_check'>check</span><span class='rparen'>)</span>
@@ -1112,7 +1146,7 @@
       <div class="method_details ">
   <h3 class="signature " id="into_string-class_method">
   
-    .<strong>into_string</strong>(result)  &#x21d2; <tt>String</tt>  <span class="extras">(private)</span>
+    .<strong>into_string</strong>(result, length)  &#x21d2; <tt>String</tt>  <span class="extras">(private)</span>
   
 
   
@@ -1144,6 +1178,22 @@
         &mdash;
         <div class='inline'>
 <p>the decoded value.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>length</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the length of the decoded value with right padding.</p>
 </div>
       
     </li>
@@ -1191,21 +1241,25 @@
       <pre class="lines">
 
 
-139
-140
-141
 142
 143
 144
 145
 146
 147
-148</pre>
+148
+149
+150
+151
+152
+153
+154
+155</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 139</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 142</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_into_string'>into_string</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_into_string'>into_string</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_q'>q</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_bit_length'>bit_length</span><span class='period'>.</span><span class='id identifier rubyid_divmod'>divmod</span><span class='lparen'>(</span><span class='int'>0x08</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_q'>q</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span> <span class='op'>&gt;</span> <span class='int'>0</span>
   <span class='id identifier rubyid_bytes'>bytes</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_q'>q</span><span class='rparen'>)</span>
@@ -1213,7 +1267,11 @@
     <span class='id identifier rubyid_bytes'>bytes</span><span class='lbracket'>[</span><span class='id identifier rubyid_i'>i</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span> <span class='op'>&amp;</span> <span class='int'>0xff</span>
     <span class='id identifier rubyid_result'>result</span> <span class='op'>&gt;&gt;=</span> <span class='int'>0x08</span>
   <span class='kw'>end</span>
-  <span class='id identifier rubyid_bytes'>bytes</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>C*</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_bstr'>bstr</span> <span class='op'>=</span> <span class='id identifier rubyid_bytes'>bytes</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>C*</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_bstr'>bstr</span> <span class='kw'>if</span> <span class='id identifier rubyid_length'>length</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+
+  <span class='id identifier rubyid_bstr'>bstr</span><span class='period'>.</span><span class='id identifier rubyid_ljust'>ljust</span><span class='lparen'>(</span><span class='id identifier rubyid_length'>length</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\x00</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1300,7 +1358,6 @@
       <pre class="lines">
 
 
-104
 105
 106
 107
@@ -1311,10 +1368,11 @@
 112
 113
 114
-115</pre>
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_le_decode_number'>le_decode_number</span><span class='lparen'>(</span><span class='id identifier rubyid_encoded_value'>encoded_value</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_symbol'>symbol</span> <span class='op'>=</span> <span class='op'>-</span><span class='int'>1</span>
@@ -1395,13 +1453,6 @@
       <pre class="lines">
 
 
-209
-210
-211
-212
-213
-214
-215
 216
 217
 218
@@ -1413,10 +1464,17 @@
 224
 225
 226
-227</pre>
+227
+228
+229
+230
+231
+232
+233
+234</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 209</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 216</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_le_encode_number'>le_encode_number</span><span class='lparen'>(</span><span class='id identifier rubyid_number'>number</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='comma'>,</span> <span class='id identifier rubyid_check'>check</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='op'>+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
@@ -1522,13 +1580,6 @@
       <pre class="lines">
 
 
-154
-155
-156
-157
-158
-159
-160
 161
 162
 163
@@ -1536,10 +1587,17 @@
 165
 166
 167
-168</pre>
+168
+169
+170
+171
+172
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 154</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 161</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_raw_value_to_number'>raw_value_to_number</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_value'>value</span>
@@ -1641,16 +1699,16 @@
       <pre class="lines">
 
 
-174
-175
-176
-177
-178
-179
-180</pre>
+181
+182
+183
+184
+185
+186
+187</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 174</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 181</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_string_to_integer'>string_to_integer</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_shift'>shift</span> <span class='op'>=</span> <span class='op'>-</span><span class='int'>0x08</span>
@@ -1760,13 +1818,6 @@
       <pre class="lines">
 
 
-186
-187
-188
-189
-190
-191
-192
 193
 194
 195
@@ -1777,10 +1828,17 @@
 200
 201
 202
-203</pre>
+203
+204
+205
+206
+207
+208
+209
+210</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 186</span>
+      <pre class="code"><span class="info file"># File 'lib/crockford32.rb', line 193</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_string_to_integer_unrolled'>string_to_integer_unrolled</span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='comma'>,</span> <span class='id identifier rubyid_iterations'>iterations</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_n'>n</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -1810,7 +1868,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Feb 22 17:46:03 2022 by
+  Generated on Tue Mar  8 17:52:10 2022 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-3.1.0).
 </div>
