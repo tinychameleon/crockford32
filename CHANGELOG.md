@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.1.0 - 2022-03-08
+- Add `length:` parameter to `Crockford32.decode` to support padding to a given length after decoding into a string.
+
 ## v1.0.2 - 2022-02-22
 - Add type definitions
 
