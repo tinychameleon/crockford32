@@ -88,6 +88,15 @@ encoded = Crockford32.encode(1234, length: 5) # encoded = "J6100"
 The padding is always "0" values and is always appended to the end of the encoded string.
 Whatever you specify as the `length:` will be the length of the encoded string you receive.
 
+Decoding also supports a `length:` argument for symmetry when using `into: :string`:
+
+```ruby
+decoded = Crockford32.decode("J61", length: 5, into: :string) # decoded = "\xD2\x04\x00\x00\x00"
+```
+
+Any length given to `Crockford32.decode` will not truncate valid decoding results. The `length:`
+is treated as a minimum.
+
 ### Check Symbols
 If you wish to append a check symbol for simple modulus-based error detection both `encode` and `decode` support it with the `check:` keyword.
 
