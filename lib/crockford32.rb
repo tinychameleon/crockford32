@@ -54,6 +54,7 @@ module Crockford32
   # @param value [String] the Base32 value to decode.
   # @param into [Symbol] the destination type to decode into. Can be +:integer+ or +:string+.
   # @param check [Boolean] whether to validate the check symbol.
+  # @param length [Integer, nil] the length of the resulting string when right padded.
   #
   # @return [Integer, String] the decoded value.
   #
@@ -61,7 +62,7 @@ module Crockford32
   # @raise [InvalidCharacterError] when the value being decoded has a character outside the
   #   Base32 symbol set or a misplaced check symbol.
   # @raise [UnsupportedDecodingTypeError] when the requested +into:+ type is not supported.
-  def self.decode(value, into: :integer, check: false)
+  def self.decode(value, into: :integer, check: false, length: nil)
     checksum = check ? value[-1] : nil
     value = check ? value[0...-1] : value
 
@@ -73,7 +74,7 @@ module Crockford32
       raise ChecksumError.new(value, actual, required) if actual != required
     end
 
-    convert result, into
+    convert result, into, length
   end
 
   # Encode a value as Base32.
@@ -118,13 +119,14 @@ module Crockford32
   #
   # @param result [Integer] the decoded value.
   # @param type [Symbol] the destination type for the value. Can be +:integer+ or +:string+.
+  # @param length [Integer, nil] the length to pad the string to.
   # @return [Integer, String] the decoded value converted to the destination type.
-  def self.convert(result, type)
+  def self.convert(result, type, length)
     case type
     when :integer
       result
     when :string
-      into_string result
+      into_string result, length
     else
       raise UnsupportedDecodingTypeError.new(type)
     end
@@ -135,8 +137,9 @@ module Crockford32
   # Each 8-bit sequence is packed into a String in little-endian order.
   #
   # @param result [Integer] the decoded value.
+  # @param length [Integer, nil] the length of the decoded value with right padding.
   # @return [String] the decoded value as a String.
-  def self.into_string(result)
+  def self.into_string(result, length)
     q, r = result.bit_length.divmod(0x08)
     q += 1 if r > 0
     bytes = Array.new(q)
@@ -144,7 +147,11 @@ module Crockford32
       bytes[i] = result & 0xff
       result >>= 0x08
     end
-    bytes.pack("C*")
+
+    bstr = bytes.pack("C*")
+    return bstr if length.nil?
+
+    bstr.ljust(length, "\x00")
   end
 
   # Convert a raw value into an Integer for encoding.

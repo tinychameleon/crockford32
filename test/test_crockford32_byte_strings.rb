@@ -10,6 +10,12 @@ class TestCrockford32DecodeAscii < Minitest::Test
     assert_equal "\x00\x00\x10\x63\x2d\x5e\xc7\x6b\x05", ::Crockford32.decode("0000hhn5ythqp2", into: :string), "decode('2PQHTY5NHH0000', into: :string)"
   end
 
+  def test_decode_supports_padding_to_a_length
+    assert_equal "\xD2\x04\x00\x00\x00", ::Crockford32.decode("J61", into: :string, length: 5)
+    assert_equal "\xD2\x04\x00\x00\x00", ::Crockford32.decode("J61D", into: :string, length: 5, check: true)
+    assert_equal "\xD2\x04", ::Crockford32.decode("J61", into: :string, length: 1)
+  end
+
   def test_encode_supports_byte_strings
     assert_equal "J61", ::Crockford32.encode("\xd2\x04"), "encode('\\x04\\xd2')"
     assert_equal "SVQV0329G3", ::Crockford32.encode("\x79\xdf\x0d\x86\x48\x70"), "encode('\\x70\\x48\\x86\\x0d\\xdf\\x79')"
